@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout('Abir Deb | Portfolio', ~{::main}, ~{}, ~{})}">
+<body>
+<main>
+
+    <!-- ═══════════════════════════════════════
+         ORBIT DOT STYLES
+         ═══════════════════════════════════════ -->
+    <style>
+        .orbit-dot {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            pointer-events: none;
+            transform-origin: center;
+            will-change: transform, opacity;
+            z-index: 25;
+            transition: box-shadow 0.18s ease, filter 0.18s ease;
+        }
+        .burst-dot {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            pointer-events: none;
+            animation: dot-scatter 0.9s ease-out forwards;
+            animation-delay: var(--dd, 0s);
+            opacity: 0;
+        }
+        @keyframes dot-scatter {
+            0%   { transform: translate(-50%,-50%) rotate(var(--da)) translateX(0);      opacity: 1;   }
+            70%  { opacity: 0.7; }
+            100% { transform: translate(-50%,-50%) rotate(var(--da)) translateX(180px);  opacity: 0;   }
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════
+         HERO SECTION — 2-Column Grid
+         ═══════════════════════════════════════ -->
+    <section id="home" class="hero-section">
+
+        <!-- AMBIENT SPOTLIGHT — mouse-follow glow (Step 7) -->
+        <div class="hero-spotlight" id="heroSpotlight"></div>
+
+        <div class="container">
+            <div class="hero-grid">
+
+                <!-- ══ LEFT: Text ══ -->
+                <div class="hero-left hero-content">
+                    <p class="hero-greeting">Hi, my name is</p>
+                    <h1 class="hero-name">Abir Deb</h1>
+
+                    <div class="hero-role" id="titleRotate">
+                        <span class="hero-title-item hero-title-active">Backend Engineer</span>
+                        <span class="hero-title-item">Java Developer</span>
+                        <span class="hero-title-item">Problem Solver</span>
+                    </div>
+
+                    <div class="hero-badge">
+                        <span class="hero-badge-dot"></span>
+                        Open to Work
+                    </div>
+
+                    <p class="hero-desc">
+                        Java &amp; Spring Boot Developer passionate about building
+                        scalable backend systems and modern web experiences.
+                        Currently studying CSE at KYAU.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a th:href="@{/projects}" class="btn-primary">
+                            View Projects &rarr;
+                        </a>
+                        <a th:href="@{/contact}" class="btn-outline">
+                            Contact Me
+                        </a>
+                    </div>
+
+                    <div class="hero-tags">
+                        <span class="hero-tag"><i class="fab fa-java"></i> Java</span>
+                        <span class="hero-tag"><i class="fas fa-leaf"></i> Spring Boot</span>
+                        <span class="hero-tag"><i class="fab fa-react"></i> React</span>
+                        <span class="hero-tag"><i class="fab fa-git-alt"></i> Git</span>
+                    </div>
+
+                    <div class="hero-socials">
+                        <a href="https://github.com/abirdeb"
+                           target="_blank" rel="noopener"
+                           class="social-link" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/abirdeb"
+                           target="_blank" rel="noopener"
+                           class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="mailto:abir@example.com"
+                           class="social-link" aria-label="Email">
+                            <i class="far fa-envelope"></i>
+                        </a>
+                        <a href="https://instagram.com/abirdeb"
+                           target="_blank" rel="noopener"
+                           class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ══ CENTER: Photo ══ -->
+                <div class="hero-center">
+                    <div class="hero-photo-wrap">
+
+                        <!-- Step 6 fix: canvas was missing — hero-particles.js needs this element -->
+                        <canvas id="hero-particle-canvas"></canvas>
+
+                        <div id="dot-field"></div>
+                        <div class="hero-photo-circle">
+                            <img th:src="@{/images/profile/abir.jpg}"
+                                 src="/images/profile/abir.jpg"
+                                 alt="Abir Deb"
+                                 class="hero-photo"/>
+                        </div>
+                        <div id="orbit-tags-container"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- ═══════════════════════════════════════
+         INLINE SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // ════════════════════════════════════════════════════
+            // PARTICLE BURST SYSTEM
+            //   0 = ring-core  — dense smoke ring body
+            //   1 = spike      — fast radially-elongated tendrils
+            //   2 = wisp       — large soft inner nebula blobs
+            // ════════════════════════════════════════════════════
+
+            var photoWrap = document.querySelector('.hero-photo-wrap');
+            var pbCanvas  = document.createElement('canvas');
+            var PB = 1000;
+            pbCanvas.width  = PB;
+            pbCanvas.height = PB;
+            pbCanvas.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:20;';
+            if (photoWrap) photoWrap.appendChild(pbCanvas);
+            var pbCtx = pbCanvas.getContext('2d');
+
+            var CX = PB / 2, CY = PB / 2;
+            var PHOTO_R = 132;
+
+            var pbParts  = [];
+            var pbActive = false;
+            var pbLastTs = 0;
+
+            function pbSpawn() {
+                pbParts = [];
+
+                // ── RING CORE (440 particles) ──
+                for (var i = 0; i < 440; i++) {
+                    pbParts.push({
+                        t: 0, ang: Math.random() * Math.PI * 2, r: PHOTO_R,
+                        spd: 48 + Math.random() * 58, da: (Math.random() - 0.5) * 2.2,
+                        sz: 1.8 + Math.random() * 3.4, a: 0.42 + Math.random() * 0.58,
+                        age: 0, life: 2.6 + Math.random() * 1.8,
+                        tp: Math.random() * Math.PI * 2, tf: 1.4 + Math.random() * 3.8, ta: 10 + Math.random() * 30,
+                    });
+                }
+
+                // ── SPIKES (140 particles) ──
+                for (var j = 0; j < 140; j++) {
+                    pbParts.push({
+                        t: 1, ang: Math.random() * Math.PI * 2, r: PHOTO_R,
+                        spd: 125 + Math.random() * 140, da: (Math.random() - 0.5) * 0.55,
+                        sz: 0.8 + Math.random() * 1.4, sLen: 13 + Math.random() * 24,
+                        a: 0.78 + Math.random() * 0.22, age: 0, life: 1.2 + Math.random() * 1.0,
+                        tp: Math.random() * Math.PI * 2, tf: 4 + Math.random() * 7, ta: 3 + Math.random() * 9,
+                    });
+                }
+
+                // ── WISPS (100 particles) ──
+                for (var k = 0; k < 100; k++) {
+                    pbParts.push({
+                        t: 2, ang: Math.random() * Math.PI * 2, r: PHOTO_R * 0.72,
+                        spd: 14 + Math.random() * 34, da: (Math.random() - 0.5) * 3.8,
+                        sz: 8 + Math.random() * 11, a: 0.13 + Math.random() * 0.22,
+                        age: 0, life: 3.0 + Math.random() * 1.2,
+                        tp: Math.random() * Math.PI * 2, tf: 0.7 + Math.random() * 2.2, ta: 20 + Math.random() * 42,
+                    });
+                }
+
+                pbActive = true;
+            }
+
+            function pbFrame(ts) {
+                var dt = pbLastTs ? Math.min((ts - pbLastTs) / 1000, 0.05) : 0;
+                pbLastTs = ts;
+                pbCtx.clearRect(0, 0, PB, PB);
+
+                if (pbActive) {
+                    var anyAlive = false;
+
+                    for (var i = 0; i < pbParts.length; i++) {
+                        var p = pbParts[i];
+                        if (p.age >= p.life) continue;
+                        anyAlive = true;
+                        p.age += dt;
+                        var lr = p.age / p.life;
+
+                        var dist;
+                        if (p.t === 1) {
+                            dist = p.spd * p.age * Math.pow(Math.max(0, 1 - lr * 0.68), 0.32);
+                        } else {
+                            dist = p.spd * p.age * Math.pow(Math.max(0, 1 - lr * 0.52), 0.58);
+                        }
+                        var r = p.r + dist;
+                        p.ang += p.da * dt;
+
+                        var turb = Math.sin(p.age * p.tf + p.tp) * p.ta * Math.sin(lr * Math.PI);
+                        var finalAng = p.ang + turb / Math.max(r, 40);
+                        var px = CX + Math.cos(finalAng) * r;
+                        var py = CY + Math.sin(finalAng) * r;
+
+                        var env;
+                        if (lr < 0.065)      { env = lr / 0.065; }
+                        else if (lr > 0.50)  { env = Math.pow(1 - (lr - 0.50) / 0.50, 1.9); }
+                        else                 { env = 1.0; }
+                        var fa = Math.max(0, env * p.a);
+                        if (fa < 0.004) continue;
+
+                        if (p.t === 0) {
+                            var sz0 = Math.max(0.4, p.sz * (1 - lr * 0.40));
+                            pbCtx.shadowBlur  = 5 + (1 - lr) * 14;
+                            pbCtx.shadowColor = 'rgba(16,185,129,' + (fa * 0.60).toFixed(3) + ')';
+                            pbCtx.beginPath();
+                            pbCtx.arc(px, py, sz0, 0, Math.PI * 2);
+                            pbCtx.fillStyle = 'rgba(16,185,129,' + fa.toFixed(3) + ')';
+                            pbCtx.fill();
+                            pbCtx.shadowBlur = 0;
+                        } else if (p.t === 1) {
+                            var sLen = p.sLen * Math.max(0, 1 - lr * 0.58);
+                            pbCtx.save();
+                            pbCtx.translate(px, py);
+                            pbCtx.rotate(finalAng + Math.PI / 2);
+                            pbCtx.shadowBlur  = 4;
+                            pbCtx.shadowColor = 'rgba(16,185,129,' + fa.toFixed(3) + ')';
+                            pbCtx.beginPath();
+                            pbCtx.ellipse(0, 0, Math.max(0.3, p.sz), Math.max(0.5, sLen), 0, 0, Math.PI * 2);
+                            pbCtx.fillStyle = 'rgba(16,185,129,' + fa.toFixed(3) + ')';
+                            pbCtx.fill();
+                            pbCtx.shadowBlur = 0;
+                            pbCtx.restore();
+                        } else {
+                            var wg = pbCtx.createRadialGradient(px, py, 0, px, py, p.sz);
+                            wg.addColorStop(0,   'rgba(16,185,129,' + (fa * 0.55).toFixed(3) + ')');
+                            wg.addColorStop(0.5, 'rgba(16,185,129,' + (fa * 0.18).toFixed(3) + ')');
+                            wg.addColorStop(1,   'rgba(16,185,129,0)');
+                            pbCtx.beginPath();
+                            pbCtx.arc(px, py, p.sz, 0, Math.PI * 2);
+                            pbCtx.fillStyle = wg;
+                            pbCtx.fill();
+                        }
+                    }
+
+                    if (!anyAlive) pbActive = false;
+                }
+
+                requestAnimationFrame(pbFrame);
+            }
+            requestAnimationFrame(pbFrame);
+
+            function addShockwave() { pbSpawn(); }
+
+
+            // ════════════════════════════════════════════════════
+            // ORBITING GREEN DOTS SYSTEM
+            // ════════════════════════════════════════════════════
+            var container = document.getElementById('dot-field');
+            if (!container) return;
+
+            var DOTS = [
+                { r: 110, size: 5,  alpha: 0.90, speed: 0.35 },
+                { r: 110, size: 4,  alpha: 0.60, speed: 0.35 },
+                { r: 110, size: 6,  alpha: 0.80, speed: 0.35 },
+                { r: 110, size: 4,  alpha: 0.50, speed: 0.35 },
+                { r: 110, size: 5,  alpha: 0.70, speed: 0.35 },
+                { r: 110, size: 3,  alpha: 0.40, speed: 0.35 },
+                { r: 110, size: 5,  alpha: 0.85, speed: 0.35 },
+                { r: 110, size: 4,  alpha: 0.55, speed: 0.35 },
+                { r: 165, size: 5,  alpha: 0.75, speed: 0.22 },
+                { r: 165, size: 4,  alpha: 0.45, speed: 0.22 },
+                { r: 165, size: 6,  alpha: 0.65, speed: 0.22 },
+                { r: 165, size: 3,  alpha: 0.35, speed: 0.22 },
+                { r: 165, size: 5,  alpha: 0.80, speed: 0.22 },
+                { r: 165, size: 4,  alpha: 0.50, speed: 0.22 },
+                { r: 165, size: 5,  alpha: 0.70, speed: 0.22 },
+                { r: 165, size: 3,  alpha: 0.40, speed: 0.22 },
+                { r: 165, size: 5,  alpha: 0.60, speed: 0.22 },
+                { r: 165, size: 4,  alpha: 0.55, speed: 0.22 },
+            ];
+
+            var innerCount = 8, outerCount = 10;
+            var dotEls = [];
+
+            DOTS.forEach(function(cfg, i) {
+                var isInner    = i < innerCount;
+                var groupSize  = isInner ? innerCount : outerCount;
+                var groupIdx   = isInner ? i : i - innerCount;
+                var startAngle = (groupIdx / groupSize) * 2 * Math.PI
+                    + (isInner ? 0 : Math.PI / outerCount);
+
+                var el = document.createElement('div');
+                el.className = 'orbit-dot';
+                el.style.width      = cfg.size + 'px';
+                el.style.height     = cfg.size + 'px';
+                el.style.background = 'rgba(16,185,129,' + cfg.alpha + ')';
+                el.style.boxShadow  = '0 0 ' + (cfg.size * 1.5) + 'px rgba(16,185,129,' + (cfg.alpha * 0.8) + ')';
+                container.appendChild(el);
+
+                dotEls.push({
+                    el: el, r: cfg.r, angle: startAngle,
+                    speed: cfg.speed * (isInner ? 1 : -1),
+                    size: cfg.size, alpha: cfg.alpha
+                });
+            });
+
+            var lastTime    = null;
+            var burstActive = false;
+
+            // ════════════════════════════════════════════════════
+            // MAGNETIC ATTRACTION — mouse pulls orbit dots (Step 6)
+            // ════════════════════════════════════════════════════
+            var heroSectionEl = document.getElementById('home');
+            var magnetX = null, magnetY = null;
+            var MAGNET_RADIUS   = 220;
+            var MAGNET_STRENGTH = 55;
+
+            if (heroSectionEl && photoWrap) {
+                heroSectionEl.addEventListener('mousemove', function (e) {
+                    var rect = photoWrap.getBoundingClientRect();
+                    var cx = rect.left + rect.width / 2;
+                    var cy = rect.top + rect.height / 2;
+                    var dx = e.clientX - cx;
+                    var dy = e.clientY - cy;
+                    if (Math.hypot(dx, dy) < MAGNET_RADIUS + rect.width / 2) {
+                        magnetX = dx;
+                        magnetY = dy;
+                    } else {
+                        magnetX = null;
+                        magnetY = null;
+                    }
+                });
+                heroSectionEl.addEventListener('mouseleave', function () {
+                    magnetX = null;
+                    magnetY = null;
+                });
+            }
+
+            // ════════════════════════════════════════════════════
+            // AMBIENT SPOTLIGHT FOLLOW (Step 7)
+            // ════════════════════════════════════════════════════
+            var spotlightEl = document.getElementById('heroSpotlight');
+            if (heroSectionEl && spotlightEl) {
+                heroSectionEl.addEventListener('mousemove', function (e) {
+                    var rect = heroSectionEl.getBoundingClientRect();
+                    var x = e.clientX - rect.left;
+                    var y = e.clientY - rect.top;
+                    spotlightEl.style.setProperty('--spot-x', x + 'px');
+                    spotlightEl.style.setProperty('--spot-y', y + 'px');
+                    spotlightEl.classList.add('is-active');
+                });
+                heroSectionEl.addEventListener('mouseleave', function () {
+                    spotlightEl.classList.remove('is-active');
+                });
+            }
+
+            function animate(ts) {
+                if (!lastTime) lastTime = ts;
+                var dt = (ts - lastTime) / 1000;
+                lastTime = ts;
+                if (!burstActive) {
+                    dotEls.forEach(function(d) {
+                        d.angle += d.speed * dt;
+                        var x = Math.cos(d.angle) * d.r;
+                        var y = Math.sin(d.angle) * d.r;
+
+                        // Magnetic pull toward cursor
+                        var attracted = false;
+                        if (magnetX !== null) {
+                            var dx = magnetX - x;
+                            var dy = magnetY - y;
+                            var dist = Math.hypot(dx, dy);
+                            if (dist < MAGNET_RADIUS && dist > 0.01) {
+                                var pull = (1 - dist / MAGNET_RADIUS) * MAGNET_STRENGTH;
+                                x += (dx / dist) * pull;
+                                y += (dy / dist) * pull;
+                                attracted = pull > 1;
+                            }
+                        }
+
+                        if (attracted) {
+                            d.el.style.boxShadow = '0 0 ' + (d.size * 3) + 'px rgba(16,185,129,1)';
+                            d.el.style.filter    = 'brightness(1.6)';
+                        } else {
+                            d.el.style.boxShadow = '0 0 ' + (d.size * 1.5) + 'px rgba(16,185,129,' + (d.alpha * 0.8) + ')';
+                            d.el.style.filter    = '';
+                        }
+
+                        d.el.style.transform = 'translate(calc(-50% + ' + x + 'px), calc(-50% + ' + y + 'px))';
+                    });
+                }
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+
+
+            // ════════════════════════════════════════════════════
+            // BURST — scatter out → reverse back in → loop
+            // ════════════════════════════════════════════════════
+            function triggerBurst() {
+                if (burstActive) return;
+                burstActive = true;
+
+                addShockwave();
+
+                dotEls.forEach(function(d) {
+                    d.snapX = Math.cos(d.angle) * d.r;
+                    d.snapY = Math.sin(d.angle) * d.r;
+                });
+
+                // ── PHASE 1: Scatter outward + fade out (750ms) ──
+                dotEls.forEach(function(d) {
+                    var farX = Math.cos(d.angle) * (d.r + 145);
+                    var farY = Math.sin(d.angle) * (d.r + 145);
+                    d.el.style.transition = 'opacity 0.25s ease, transform 0.75s cubic-bezier(0.15,0,0.75,1)';
+                    d.el.style.opacity    = '0';
+                    d.el.style.transform  = 'translate(calc(-50% + ' + farX + 'px), calc(-50% + ' + farY + 'px))';
+                });
+
+                // Extra burst-dot particles
+                for (var i = 0; i < 20; i++) {
+                    (function(idx) {
+                        var dot = document.createElement('div');
+                        dot.className = 'burst-dot';
+                        var sz = Math.random() * 4 + 3;
+                        dot.style.width      = sz + 'px';
+                        dot.style.height     = sz + 'px';
+                        dot.style.background = '#10b981';
+                        dot.style.boxShadow  = '0 0 8px #10b981, 0 0 16px rgba(16,185,129,0.6)';
+                        dot.style.setProperty('--da', ((idx / 20) * 360 + (Math.random() - 0.5) * 15) + 'deg');
+                        dot.style.setProperty('--dd', (idx * 0.02) + 's');
+                        container.appendChild(dot);
+                        setTimeout(function(){ if (dot.parentNode) dot.parentNode.removeChild(dot); }, 1100);
+                    })(i);
+                }
+
+                // ── PHASE 2 (750ms): Reverse — glide back to snapped orbit pos ──
+                setTimeout(function() {
+                    dotEls.forEach(function(d) {
+                        d.el.style.transition = 'opacity 0.5s ease, transform 0.9s cubic-bezier(0.22,0.9,0.4,1)';
+                        d.el.style.opacity    = d.alpha.toString();
+                        d.el.style.transform  = 'translate(calc(-50% + ' + d.snapX + 'px), calc(-50% + ' + d.snapY + 'px))';
+                    });
+
+                    // ── PHASE 3: clear transitions → resume orbit → loop ──
+                    setTimeout(function() {
+                        dotEls.forEach(function(d) { d.el.style.transition = ''; });
+                        burstActive = false;
+                        if (autoSchedule) triggerBurst();
+                    }, 950);
+
+                }, 750);
+            }
+
+            var autoSchedule = false;
+
+            // Page load burst → then loop
+            setTimeout(function() {
+                triggerBurst();
+                autoSchedule = true;
+            }, 900);
+
+            // Photo click triggers burst
+            var photoCircle = document.querySelector('.hero-photo-circle');
+            if (photoCircle) {
+                photoCircle.addEventListener('click', function(){ triggerBurst(); });
+            }
+
+        });
+    </script>
+
+
+</main>
+</body>
+</html>

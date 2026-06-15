@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          'Skills | Abir Deb',
+          ~{::main},
+          @{/css/skills.css},
+          @{/js/skills.js}
+      )}">
+
+<title>Skills | Abir Deb</title>
+
+<main>
+    <div class="s-bg">
+
+        <section class="s-hero">
+            <div class="s-hero-inner">
+                <span class="s-hero-badge">04 // skills</span>
+                <h1 class="s-hero-h">My <span class="s-accent-word">Skills</span></h1>
+                <p class="s-hero-sub">
+                    Technologies I work with — <span class="s-accent-word">built</span> from real projects.
+                </p>
+            </div>
+        </section>
+
+        <section class="s-arena-wrap" id="s-arena">
+            <div class="s-arena-grid">
+
+                <div class="s-sidebar" id="sSidebar">
+                    <div class="s-ctr">
+                        <span class="s-ctr-num" id="sCtrNum">01</span>
+                        <span class="s-ctr-sep">/</span>
+                        <span class="s-ctr-tot">04</span>
+                        <span class="s-ctr-lbl">SKILL</span>
+                    </div>
+                    <div class="s-rail">
+                        <div class="s-rail-node active" data-step="1">
+                            <div class="s-dot" data-step="1">
+                                01
+                                <span class="s-rail-pulse"></span>
+                            </div>
+                            <div class="s-rail-meta">
+                                <span class="s-rail-num">01</span>
+                                <span class="s-rail-lbl">BACKEND</span>
+                            </div>
+                        </div>
+                        <div class="s-rail-gap">
+                            <span class="s-rail-dash"></span>
+                            <span class="s-rail-dash"></span>
+                            <span class="s-rail-dash"></span>
+                        </div>
+                        <div class="s-rail-node" data-step="2">
+                            <div class="s-dot" data-step="2">02</div>
+                            <div class="s-rail-meta">
+                                <span class="s-rail-num">02</span>
+                                <span class="s-rail-lbl">FRONTEND</span>
+                            </div>
+                        </div>
+                        <div class="s-rail-gap">
+                            <span class="s-rail-dash"></span>
+                            <span class="s-rail-dash"></span>
+                            <span class="s-rail-dash"></span>
+                        </div>
+                        <div class="s-rail-node" data-step="3">
+                            <div class="s-dot" data-step="3">03</div>
+                            <div class="s-rail-meta">
+                                <span class="s-rail-num">03</span>
+                                <span class="s-rail-lbl">DATABASE</span>
+                            </div>
+                        </div>
+                        <div class="s-rail-gap">
+                            <span class="s-rail-dash"></span>
+                            <span class="s-rail-dash"></span>
+                            <span class="s-rail-dash"></span>
+                        </div>
+                        <div class="s-rail-node" data-step="4">
+                            <div class="s-dot" data-step="4">04</div>
+                            <div class="s-rail-meta">
+                                <span class="s-rail-num">04</span>
+                                <span class="s-rail-lbl">TOOLS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="s-stack" id="sStack">
+
+                    <!-- CARD 1: BACKEND -->
+                    <div class="s-card" data-depth="0" data-card="1" data-idx="0" data-theme="backend">
+                        <div class="s-card-hdr">
+                            <span class="s-card-num">01 <span class="s-card-sep">//</span> 04</span>
+                            <span class="s-card-type">BACKEND</span>
+                            <span class="s-active-badge">
+                                <span class="s-active-dot"></span>
+                                ACTIVE
+                            </span>
+                        </div>
+
+                        <div class="s-title-row">
+                            <span class="s-ico"><i class="fas fa-server"></i></span>
+                            <div class="s-title-wrap">
+                                <h2 class="s-title">Backend <span>Development</span></h2>
+                                <p class="s-subtitle">Server-side APIs &amp; services</p>
+                                <span class="s-title-line"></span>
+                            </div>
+                        </div>
+
+                        <ul class="s-skills">
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Java &amp; OOP</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Spring Boot</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Spring MVC</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>REST API Design</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>JPA / Hibernate</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Maven Build</li>
+                        </ul>
+
+                        <div class="s-tags">
+                            <span class="s-tag-chip">JAVA</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">SPRING</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">REST</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">JPA</span>
+                        </div>
+
+                        <span class="s-peek-icon"><i class="fas fa-server"></i></span>
+                    </div>
+
+                    <!-- CARD 2: FRONTEND -->
+                    <div class="s-card" data-depth="1" data-card="2" data-idx="1" data-theme="frontend">
+                        <div class="s-card-hdr">
+                            <span class="s-card-num">02 <span class="s-card-sep">//</span> 04</span>
+                            <span class="s-card-type">FRONTEND</span>
+                        </div>
+
+                        <div class="s-title-row">
+                            <span class="s-ico"><i class="fas fa-code"></i></span>
+                            <div class="s-title-wrap">
+                                <h2 class="s-title">Frontend <span>Development</span></h2>
+                                <p class="s-subtitle">Interactive &amp; responsive UI</p>
+                                <span class="s-title-line"></span>
+                            </div>
+                        </div>
+
+                        <ul class="s-skills">
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>HTML5</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>CSS3 &amp; Animations</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>JavaScript (ES6+)</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Thymeleaf</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Bootstrap</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Responsive Design</li>
+                        </ul>
+
+                        <div class="s-tags">
+                            <span class="s-tag-chip">HTML</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">CSS</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">JS</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">BOOTSTRAP</span>
+                        </div>
+
+                        <span class="s-peek-icon"><i class="fas fa-code"></i></span>
+                    </div>
+
+                    <!-- CARD 3: DATABASE -->
+                    <div class="s-card" data-depth="2" data-card="3" data-idx="2" data-theme="database">
+                        <div class="s-card-hdr">
+                            <span class="s-card-num">03 <span class="s-card-sep">//</span> 04</span>
+                            <span class="s-card-type">DATABASE</span>
+                        </div>
+
+                        <div class="s-title-row">
+                            <span class="s-ico"><i class="fas fa-database"></i></span>
+                            <div class="s-title-wrap">
+                                <h2 class="s-title">Database <span>Management</span></h2>
+                                <p class="s-subtitle">Data storage &amp; querying</p>
+                                <span class="s-title-line"></span>
+                            </div>
+                        </div>
+
+                        <ul class="s-skills">
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>MySQL</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>PostgreSQL</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>MongoDB</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Redis</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>SQL Query Design</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Schema Modeling</li>
+                        </ul>
+
+                        <div class="s-tags">
+                            <span class="s-tag-chip">MYSQL</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">POSTGRES</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">MONGO</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">REDIS</span>
+                        </div>
+
+                        <span class="s-peek-icon"><i class="fas fa-database"></i></span>
+                    </div>
+
+                    <!-- CARD 4: TOOLS -->
+                    <div class="s-card" data-depth="3" data-card="4" data-idx="3" data-theme="tools">
+                        <div class="s-card-hdr">
+                            <span class="s-card-num">04 <span class="s-card-sep">//</span> 04</span>
+                            <span class="s-card-type">TOOLS</span>
+                        </div>
+
+                        <div class="s-title-row">
+                            <span class="s-ico"><i class="fas fa-tools"></i></span>
+                            <div class="s-title-wrap">
+                                <h2 class="s-title">Dev <span>Tools</span></h2>
+                                <p class="s-subtitle">Workflow &amp; productivity stack</p>
+                                <span class="s-title-line"></span>
+                            </div>
+                        </div>
+
+                        <ul class="s-skills">
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Git &amp; GitHub</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Docker</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>IntelliJ IDEA</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Postman</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Linux CLI</li>
+                            <li class="s-skill-item"><span class="s-dot-bullet"></span>VS Code</li>
+                        </ul>
+
+                        <div class="s-tags">
+                            <span class="s-tag-chip">GIT</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">DOCKER</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">LINUX</span>
+                            <span class="s-tag-sep">•</span>
+                            <span class="s-tag-chip">POSTMAN</span>
+                        </div>
+
+                        <span class="s-peek-icon"><i class="fas fa-tools"></i></span>
+                    </div>
+
+                </div>
+
+                <!-- ── STEP 15: Right Nav (replaced) ── -->
+                <div class="s-nav" id="sNav">
+                    <button class="s-nb" id="sBtnPrev" disabled aria-label="Previous">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+
+                    <div class="s-nav-hint">
+                        <span class="s-nav-hint-line"></span>
+                        <span class="s-nav-hint-txt">drag or click</span>
+                        <span class="s-nav-hint-line"></span>
+                    </div>
+
+                    <button class="s-nb" id="sBtnNext" aria-label="Next">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+
+                    <div class="s-nav-drag-label">
+                        <span class="s-nav-drag-arrow">⤵</span>
+                        <span class="s-nav-drag-txt">Drag card to focus &amp; explore</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── STEP 16: Drop Zone ── -->
+            <div class="s-drop-zone" id="sDropZone">
+                <svg class="s-drop-rings" viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse class="s-ring s-ring-1" cx="130" cy="80" rx="120" ry="68" fill="none" stroke-width="1.2"/>
+                    <ellipse class="s-ring s-ring-2" cx="130" cy="80" rx="88"  ry="48" fill="none" stroke-width="1.0"/>
+                    <ellipse class="s-ring s-ring-3" cx="130" cy="80" rx="54"  ry="28" fill="none" stroke-width="0.8"/>
+                    <g class="s-crosshair">
+                        <line x1="130" y1="62" x2="130" y2="98" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="112" y1="80" x2="148" y2="80" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="130" cy="80" r="7" fill="none" stroke-width="1.8"/>
+                    </g>
+                </svg>
+                <div class="s-drop-labels">
+                    <span class="s-drop-main">DROP TO FOCUS</span>
+                    <span class="s-drop-sub">See skill in detail</span>
+                </div>
+            </div>
+
+            <div class="s-tip-box">
+                <span class="s-tip-icon">💡</span>
+                <span class="s-tip-text">Tip: Drag cards to explore skills in detail ✨</span>
+            </div>
+
+            <!-- ── STEP 17: Bottom CTA + Socials ── -->
+            <div class="s-bottom-bar">
+                <div class="s-socials">
+                    <a href="https://github.com/yourusername"      class="s-soc-btn s-soc-gh" target="_blank" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/yourusername" class="s-soc-btn s-soc-li" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:youremail@gmail.com"           class="s-soc-btn s-soc-em" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://instagram.com/yourusername"   class="s-soc-btn s-soc-ig" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+
+                <div class="s-cta">
+                    <p class="s-cta-txt">Want to build something <span class="s-cta-accent">awesome</span> together?</p>
+                    <a href="/contact" class="s-cta-btn">
+                        Let's Work <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</main>
+
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="navbar">
+
+    <style>
+        /* ═══════════════════════════════════════
+           NAVBAR VARIABLES
+           ═══════════════════════════════════════ */
+        :root {
+            --nav-h:    64px;
+            --nav-ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ═══════════════════════════════════════
+           SITE HEADER — DARK (default)
+           ═══════════════════════════════════════ */
+        .site-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            height: var(--nav-h);
+            background: rgba(13, 17, 23, 0.80);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition:
+                    background   0.40s var(--nav-ease),
+                    border-color 0.35s var(--nav-ease),
+                    box-shadow   0.35s var(--nav-ease);
+        }
+        .site-header.scrolled {
+            background: rgba(13, 17, 23, 0.97);
+            border-bottom-color: rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 28px rgba(0, 0, 0, 0.50);
+        }
+
+        /* ═══════════════════════════════════════
+           SITE HEADER — LIGHT THEME OVERRIDE
+           ═══════════════════════════════════════ */
+        [data-theme="light"] .site-header {
+            background: rgba(246, 248, 250, 0.85) !important;
+            border-bottom-color: rgba(0, 0, 0, 0.10);
+        }
+        [data-theme="light"] .site-header.scrolled {
+            background: rgba(246, 248, 250, 0.97) !important;
+            border-bottom-color: rgba(5, 150, 105, 0.30);
+            box-shadow: 0 4px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ═══════════════════════════════════════
+           SCROLL PROGRESS BAR
+           ═══════════════════════════════════════ */
+        .nav-progress {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 2px;
+            width: 0%;
+            background: var(--accent, #10b981);
+            border-radius: 0 2px 2px 0;
+            z-index: 10;
+            transition: width 0.10s linear;
+            pointer-events: none;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.50);
+        }
+
+        /* ═══════════════════════════════════════
+           BORDER GLOW
+           ═══════════════════════════════════════ */
+        .nav-border-glow {
+            position: absolute;
+            bottom: -1px; left: 8%; right: 8%;
+            height: 1px;
+            pointer-events: none;
+            opacity: 0;
+            border-radius: 50%;
+            background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(16, 185, 129, 0.50),
+                    rgba(16, 185, 129, 0.30),
+                    transparent
+            );
+            transition: opacity 0.45s ease;
+        }
+        .site-header.scrolled .nav-border-glow { opacity: 1; }
+
+        /* ═══════════════════════════════════════
+           CONTAINER + NAVBAR FLEX
+           ═══════════════════════════════════════ */
+        .site-header .container {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 0 32px;
+            height: 100%;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            gap: 16px;
+        }
+
+        /* ═══════════════════════════════════════
+           BRAND / LOGO  — < Abir />
+           ═══════════════════════════════════════ */
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            text-decoration: none;
+            flex-shrink: 0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #e6edf3;
+            letter-spacing: -0.02em;
+            transition: opacity 0.2s ease;
+        }
+        .nav-brand:hover { opacity: 0.85; color: #e6edf3; }
+
+        [data-theme="light"] .nav-brand       { color: #1c2128; }
+        [data-theme="light"] .nav-brand:hover { color: #1c2128; }
+
+        .logo-bracket { color: #10b981; font-weight: 700; }
+        .logo-name    { color: #e6edf3; margin: 0 2px; }
+
+        [data-theme="light"] .logo-name { color: #1c2128; }
+
+        /* Status dot */
+        .brand-status-dot {
+            display: inline-block;
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            margin-left: 8px;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.70);
+            animation: status-pulse 2.4s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes status-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.5; transform: scale(0.80); }
+        }
+
+        /* ═══════════════════════════════════════
+           NAV MENU — desktop
+           ═══════════════════════════════════════ */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* ═══════════════════════════════════════
+           LINKS WRAPPER + SLIDING INDICATOR
+           ═══════════════════════════════════════ */
+        .nav-links-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .nav-indicator {
+            position: absolute;
+            bottom: -6px;
+            height: 2px;
+            border-radius: 2px;
+            pointer-events: none;
+            opacity: 0;
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.60);
+            transition:
+                    left    0.36s var(--nav-ease),
+                    width   0.36s var(--nav-ease),
+                    opacity 0.24s ease;
+        }
+
+        /* ═══════════════════════════════════════
+           NAV LINKS
+           ═══════════════════════════════════════ */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin: 0; padding: 0;
+        }
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #8b949e;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            position: relative;
+            transition: color 0.22s ease, background 0.22s ease;
+        }
+        .nav-links a:hover {
+            color: #e6edf3;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .nav-links a.active {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px; left: 50%;
+            transform: translateX(-50%);
+            width: 20px; height: 2px;
+            background: #10b981;
+            border-radius: 2px;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.60);
+        }
+
+        /* Light theme — nav links */
+        [data-theme="light"] .nav-links a {
+            color: #57606a;
+        }
+        [data-theme="light"] .nav-links a:hover {
+            color: #1c2128;
+            background: rgba(0, 0, 0, 0.05);
+        }
+        [data-theme="light"] .nav-links a.active {
+            color: #059669;
+            background: rgba(5, 150, 105, 0.08);
+        }
+        [data-theme="light"] .nav-links a.active::after {
+            background: #059669;
+        }
+        [data-theme="light"] .nav-indicator {
+            background: #059669;
+        }
+
+        /* ═══════════════════════════════════════
+           NAV ACTION AREA
+           ═══════════════════════════════════════ */
+        .nav-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════
+           THEME TOGGLE BUTTON
+           ═══════════════════════════════════════ */
+        .theme-toggle-btn {
+            width: 36px; height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1c2128;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: #8b949e;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+        .theme-toggle-btn:hover {
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.40);
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+        /* SVG icon inside */
+        .theme-toggle-btn svg {
+            width: 16px; height: 16px;
+            flex-shrink: 0;
+        }
+        /* FontAwesome <i> icon inside */
+        .theme-toggle-btn i {
+            font-size: 15px;
+            line-height: 1;
+        }
+
+        /* Light theme toggle button */
+        [data-theme="light"] .theme-toggle-btn {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.10);
+            color: #57606a;
+        }
+        [data-theme="light"] .theme-toggle-btn:hover {
+            color: #059669;
+            border-color: rgba(5, 150, 105, 0.40);
+            background: rgba(5, 150, 105, 0.08);
+        }
+
+        /* ═══════════════════════════════════════
+           HIRE ME BADGE
+           ═══════════════════════════════════════ */
+        .hire-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.10);
+            border: 1px solid rgba(16, 185, 129, 0.30);
+            transition: all 0.24s ease;
+        }
+        .hire-badge:hover {
+            background: #10b981;
+            color: #0d1117;
+            border-color: #10b981;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.30);
+        }
+        .hire-badge::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -85%;
+            width: 55%; height: 100%;
+            background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.22) 50%, transparent 62%);
+            transition: left 0.52s ease;
+            pointer-events: none;
+        }
+        .hire-badge:hover::before { left: 145%; }
+
+        /* Light theme hire badge */
+        [data-theme="light"] .hire-badge {
+            color: #059669;
+            background: rgba(5, 150, 105, 0.08);
+            border-color: rgba(5, 150, 105, 0.30);
+        }
+        [data-theme="light"] .hire-badge:hover {
+            background: #059669;
+            color: #ffffff;
+            border-color: #059669;
+        }
+
+        .hire-pulse-ring {
+            position: absolute; inset: -1px;
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            animation: hire-ring 2.6s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes hire-ring {
+            0%   { transform: scale(1);    opacity: 0.85; }
+            65%  { transform: scale(1.08); opacity: 0; }
+            100% { transform: scale(1.08); opacity: 0; }
+        }
+        .hire-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.80);
+            flex-shrink: 0;
+            animation: hire-dot-p 2.1s ease-in-out infinite;
+        }
+        @keyframes hire-dot-p {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.40); }
+        }
+        .hire-icon { font-size: 11px; }
+
+        /* ═══════════════════════════════════════
+           HAMBURGER — mobile
+           ═══════════════════════════════════════ */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: background 0.22s ease;
+        }
+        .hamburger:hover { background: rgba(255, 255, 255, 0.05); }
+        .hamburger span {
+            display: block;
+            height: 2px;
+            border-radius: 2px;
+            background: #8b949e;
+            transition: transform 0.32s var(--nav-ease), opacity 0.24s ease;
+        }
+        .hamburger span:nth-child(1) { width: 22px; }
+        .hamburger span:nth-child(2) { width: 16px; }
+        .hamburger span:nth-child(3) { width: 22px; }
+        .hamburger:hover span        { background: #10b981; }
+        .hamburger.active span:nth-child(1) { transform: translateY(7px)  rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-6px); }
+        .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Light theme hamburger */
+        [data-theme="light"] .hamburger span   { background: #57606a; }
+        [data-theme="light"] .hamburger:hover  { background: rgba(0, 0, 0, 0.05); }
+
+        /* ═══════════════════════════════════════
+           MOBILE DROPDOWN
+           ═══════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .hamburger { display: flex; }
+            .nav-indicator { display: none !important; }
+
+            .nav-menu {
+                position: absolute;
+                top: calc(var(--nav-h) + 8px);
+                left: 12px; right: 12px;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: flex-start;
+                gap: 8px;
+                padding: 16px;
+                border-radius: 12px;
+                background: #161b22;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+                z-index: 9998;
+                opacity: 0;
+                transform: translateY(-10px);
+                visibility: hidden;
+                pointer-events: none;
+                transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+            }
+            .nav-menu.active {
+                opacity: 1;
+                transform: translateY(0);
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            /* Light theme — mobile dropdown */
+            [data-theme="light"] .nav-menu {
+                background: #ffffff;
+                border-color: rgba(0, 0, 0, 0.10);
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-links-wrapper { width: 100%; }
+            .nav-links {
+                flex-direction: column;
+                gap: 2px; width: 100%;
+            }
+            .nav-links a {
+                padding: 10px 14px;
+                border-radius: 8px;
+                font-size: 0.92rem;
+                width: 100%;
+            }
+            .nav-links a.active::after { display: none; }
+            .nav-links a.active {
+                border-left: 2px solid #10b981;
+                padding-left: 12px;
+            }
+            [data-theme="light"] .nav-links a.active {
+                border-left-color: #059669;
+            }
+            .nav-action {
+                padding-top: 8px;
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
+                justify-content: center;
+            }
+            [data-theme="light"] .nav-action {
+                border-top-color: rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-header .container { padding: 0 16px; }
+        }
+    </style>
+
+    <header class="site-header" id="site-header">
+
+        <!-- ── Scroll Progress Bar ── -->
+        <div class="nav-progress" id="nav-progress"></div>
+
+        <!-- ── Green Border Glow ── -->
+        <div class="nav-border-glow"></div>
+
+        <div class="container">
+            <div class="navbar">
+
+                <!-- ══ BRAND / LOGO  < Abir /> ══ -->
+                <a th:href="@{/}" class="nav-brand" href="/">
+                    <span class="logo-bracket">&lt;&nbsp;</span>
+                    <span class="logo-name">Abir</span>
+                    <span class="logo-bracket">&nbsp;/&gt;</span>
+                    <span class="brand-status-dot" title="Available for work"></span>
+                </a>
+
+                <!-- ══ NAV LINKS + ACTIONS (Desktop) ══ -->
+                <div class="nav-menu" id="nav-menu">
+
+                    <!-- Center links -->
+                    <div class="nav-links-wrapper">
+                        <span class="nav-indicator" id="nav-indicator"></span>
+                        <ul class="nav-links" id="nav-links-list">
+                            <li>
+                                <a th:href="@{/}"
+                                   th:classappend="${currentPage == 'home'} ? 'active' : ''"
+                                   href="/">Home</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/about}"
+                                   th:classappend="${currentPage == 'about'} ? 'active' : ''"
+                                   href="/about">About</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/skills}"
+                                   th:classappend="${currentPage == 'skills'} ? 'active' : ''"
+                                   href="/skills">Skills</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/projects}"
+                                   th:classappend="${currentPage == 'projects'} ? 'active' : ''"
+                                   href="/projects">Projects</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/contact}"
+                                   th:classappend="${currentPage == 'contact'} ? 'active' : ''"
+                                   href="/contact">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right: Theme Toggle + Hire Me -->
+                    <div class="nav-action">
+
+                        <!-- Moon/Sun icon toggle -->
+                        <button class="theme-toggle-btn"
+                                id="theme-toggle"
+                                aria-label="Toggle theme"
+                                title="Switch theme">
+                            <!-- Icon: script দিয়ে moon/sun switch হবে -->
+                            <i class="fa-solid fa-moon" id="theme-icon"></i>
+                        </button>
+
+                        <!-- Hire Me -->
+                        <a th:href="@{/contact}" href="/contact" class="hire-badge">
+                            <span class="hire-pulse-ring"></span>
+                            <span class="hire-dot"></span>
+                            <span class="hire-icon">⚡</span>
+                            <span>Hire Me</span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- ══ HAMBURGER (Mobile) ══ -->
+                <button class="hamburger" id="hamburger"
+                        aria-label="Toggle menu"
+                        aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ════════════════════════════════════════════
+         NAVBAR SCRIPT — Scroll + Indicator + Mobile + Theme
+         ════════════════════════════════════════════ -->
+    <script>
+        (function () {
+            'use strict';
+
+            /* ══════════════════════════════════════
+               1. THEME — localStorage থেকে load করে
+                  icon update করে — script.js load
+                  হওয়ার আগেও সঠিক icon দেখাবে
+               ══════════════════════════════════════ */
+            var themeIcon = document.getElementById('theme-icon');
+
+            function applyThemeIcon(theme) {
+                if (!themeIcon) return;
+                themeIcon.className = (theme === 'light')
+                    ? 'fa-solid fa-sun'
+                    : 'fa-solid fa-moon';
+            }
+
+            /* Page load এ saved theme থেকে icon set করো */
+            var savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            applyThemeIcon(savedTheme);
+
+            /* Theme toggle button click */
+            var toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function () {
+                    var current = document.documentElement.getAttribute('data-theme');
+                    var next    = (current === 'dark') ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('portfolio-theme', next);
+                    applyThemeIcon(next);
+                });
+            }
+
+            /* ══════════════════════════════════════
+               2. SCROLL PROGRESS + SCROLLED STATE
+               ══════════════════════════════════════ */
+            var progressBar = document.getElementById('nav-progress');
+            var header      = document.getElementById('site-header');
+            var ticking     = false;
+
+            function updateScrollState() {
+                var scrollTop = window.scrollY || window.pageYOffset;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var progress  = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+                if (progressBar) progressBar.style.width = progress.toFixed(2) + '%';
+                if (header) header.classList.toggle('scrolled', scrollTop > 30);
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    requestAnimationFrame(updateScrollState);
+                    ticking = true;
+                }
+            }, { passive: true });
+            updateScrollState();
+
+            /* ══════════════════════════════════════
+               3. SLIDING ACTIVE INDICATOR
+               ══════════════════════════════════════ */
+            var indicator  = document.getElementById('nav-indicator');
+            var navWrapper = indicator ? indicator.parentElement : null;
+
+            function moveIndicator(targetEl, animated) {
+                if (!indicator || !navWrapper || !targetEl) return;
+                var tRect = targetEl.getBoundingClientRect();
+                var wRect = navWrapper.getBoundingClientRect();
+                var left  = tRect.left - wRect.left;
+
+                if (!animated) {
+                    indicator.style.transition = 'none';
+                    indicator.style.opacity    = '0';
+                }
+                indicator.style.left  = left + 'px';
+                indicator.style.width = tRect.width + 'px';
+
+                if (!animated) {
+                    requestAnimationFrame(function () {
+                        requestAnimationFrame(function () {
+                            indicator.style.transition = '';
+                            indicator.style.opacity    = '1';
+                        });
+                    });
+                } else {
+                    indicator.style.opacity = '1';
+                }
+            }
+
+            function resetToActive() {
+                var active = document.querySelector('.nav-links a.active');
+                if (active && indicator) {
+                    moveIndicator(active, true);
+                } else if (indicator) {
+                    indicator.style.opacity = '0';
+                }
+            }
+
+            document.querySelectorAll('.nav-links a').forEach(function (link) {
+                link.addEventListener('mouseenter', function () { moveIndicator(link, true); });
+            });
+            if (navWrapper) {
+                navWrapper.addEventListener('mouseleave', resetToActive);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', resetToActive);
+            } else {
+                resetToActive();
+            }
+            setTimeout(resetToActive, 350);
+            window.addEventListener('resize', resetToActive, { passive: true });
+
+            /* ══════════════════════════════════════
+               4. HAMBURGER MOBILE TOGGLE
+               ══════════════════════════════════════ */
+            var hamburger = document.getElementById('hamburger');
+            var navMenu   = document.getElementById('nav-menu');
+
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function () {
+                    var isActive = hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active', isActive);
+                    hamburger.setAttribute('aria-expanded', isActive.toString());
+                });
+
+                document.querySelectorAll('.nav-links a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        hamburger.setAttribute('aria-expanded', 'false');
+                    });
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        hamburger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+        })();
+    </script>
+
+</nav>
+
+</body>
+</html>

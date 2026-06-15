@@ -1,0 +1,113 @@
+/* =============================================
+   GLOBAL ANIMATIONS — animations.css
+   Contains reusable animations and keyframes
+   ============================================= */
+
+/* ══════════════════════════════════════════════
+   SCROLL REVEAL (FADE-UP)
+   (Already existed, kept intact)
+   ══════════════════════════════════════════════ */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+}
+
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════════
+   PORTAL ANIMATIONS (PROJECTS PAGE)
+   States 03 - 06: Creation, Activation, Absorption
+   ══════════════════════════════════════════════ */
+
+/* 1. portalAppear: Ring গুলো প্রথমে appear করার সময় */
+@keyframes portalAppear {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* 2. portalSpin: Ring গুলো ঘুরবে (infinite loop) */
+@keyframes portalSpin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* 3. portalGlowFadeIn: Glow blob প্রথমে fade in হবে */
+@keyframes portalGlowFadeIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* 4. portalGlowPulse: Glow blob continuously breathe করবে */
+@keyframes portalGlowPulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* 5. particleOrbit: 8টা particle portal এর চারপাশে ঘুরবে (Oval orbit) */
+@keyframes particleOrbit {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(130px) rotate(0deg);
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg) translateX(130px) rotate(-360deg);
+        opacity: 0;
+    }
+}
+
+/* 6. portalImplode: Card absorb হওয়ার সময় ring গুলো collapse হবে */
+@keyframes portalImplode {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+}
+
+/* 7. portalContainerImplode: পুরো portal container টা মিলিয়ে যাবে */
+@keyframes portalContainerImplode {
+    0% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50%) scale(0.2);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Nexus One",
+    "category": "Full Stack Web App",
+    "description": "An intelligent institutional management system developed for RNA University. It features secure role-based login portals for Admin, Teacher, and Student, alongside an integrated emergency blood finder module for quick donor matching.",
+    "tags": ["Spring Boot", "React", "Java", "REST API", "JavaScript"],
+    "featured": true,
+    "githubUrl": "https://github.com/ABIR-DEB120657/OOPS-II-project",
+    "liveUrl": ""
+  },
+  {
+    "title": "Bank Management System",
+    "category": "Console Application",
+    "description": "A complete banking management system built with C++. It utilizes file handling to securely store user account details, balances, and transaction records in local text files.",
+    "tags": ["C++", "OOP", "File Handling", "Data Structures"],
+    "featured": true,
+    "githubUrl": "https://github.com/ABIR-DEB120657/cpp",
+    "liveUrl": ""
+  },
+  {
+    "title": "My Portfolio",
+    "category": "Frontend",
+    "description": "A premium personal portfolio with MacOS/Apple-like UI and glassmorphism aesthetics. Features a dark cyberpunk theme, animated canvas background, and a stacked card deck project showcase.",
+    "tags": ["Spring Boot", "Thymeleaf", "Vanilla JS", "CSS", "UI/UX"],
+    "featured": true,
+    "githubUrl": "https://github.com/ABIR-DEB120657",
+    "liveUrl": ""
+  }
+]

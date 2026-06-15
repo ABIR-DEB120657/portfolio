@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--suppress CssUnresolvedCustomProperty -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Portfolio</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/animations.css}">
+
+    <!-- Fix 3: crossorigin attribute যোগ করা হয়েছে — IDE library warning কমাবে -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+
+    <style>
+        /* 404 পেজের জন্য স্পেশাল কিছু ইনলাইন স্টাইল */
+        .error-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1rem;
+            /* Fix 1: --accent-color এ fallback value দেওয়া হয়েছে */
+            background: linear-gradient(135deg, var(--accent-color, #6366f1), #8b5cf6);
+            /* Fix 2: Standard + WebKit দুটো property-ই দেওয়া হয়েছে */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container error-container">
+    <div class="glass-panel animate-zoom-in" style="max-width: 500px; width: 100%;">
+
+        <div class="error-code animate-float">404</div>
+
+        <h2 class="animate-slide-up delay-100">Oops! Page Not Found</h2>
+
+        <p class="animate-slide-up delay-200">
+            যে পেজটি আপনি খুঁজছেন সেটি হয়তো ডিলিট হয়ে গেছে, অথবা লিংকটি ভুল। দয়া করে সঠিক লিংক চেক করুন।
+        </p>
+
+        <div class="animate-slide-up delay-300" style="margin-top: 2rem;">
+            <a th:href="@{/}" class="btn btn-primary">
+                <i class="fas fa-home"></i> Go Back Home
+            </a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

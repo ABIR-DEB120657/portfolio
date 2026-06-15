@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout('About | Abir Deb', ~{::main}, ~{}, ~{})}">
+<body>
+<main class="about-page">
+
+    <link rel="stylesheet" th:href="@{/css/about.css}" href="/css/about.css">
+
+    <!-- ══════════════════════════════════════════════
+         SECTION 1 ─ WHO IS ABIR DEB?
+    ══════════════════════════════════════════════ -->
+    <section id="about-who" class="about-section about-who-section">
+        <div class="about-container">
+
+            <div class="who-left reveal">
+                <p class="who-label">WHO IS</p>
+                <h1 class="who-heading">
+                    ABIR <span class="who-name-accent"
+                               th:text="${about != null ? about.name.split(' ')[1] + '?' : 'DEB?'}">DEB?</span>
+                </h1>
+                <p class="who-bio">
+                    I am a passionate Computer Science and Engineering student,
+                    problem solver and aspiring software engineer who loves building
+                    <span class="who-bio-accent">efficient solutions</span> through code.
+                </p>
+                <p class="who-bio">
+                    Currently pursuing a B.Sc. in Computer Science &amp; Engineering
+                    with a strong interest in Data Structures, Algorithms,
+                    Java Development and Software Design.
+                </p>
+                <div class="who-tags">
+                    <span class="who-tag">⬡ Java</span>
+                    <span class="who-tag">&lt;/&gt; DSA</span>
+                    <span class="who-tag">⬡ OOP</span>
+                    <span class="who-tag">⊕ Web Dev</span>
+                    <span class="who-tag">⚑ Problem Solver</span>
+                </div>
+            </div>
+
+            <div class="who-right reveal">
+                <div class="terminal-window">
+                    <div class="terminal-titlebar">
+                        <span class="t-dot t-red"></span>
+                        <span class="t-dot t-yellow"></span>
+                        <span class="t-dot t-green"></span>
+                    </div>
+                    <pre class="terminal-code"><span class="t-keyword">while</span>(<span class="t-value">!success</span>){
+    <span class="t-fn">learn</span>();
+    <span class="t-fn">practice</span>();
+    <span class="t-fn">improve</span>();
+}
+<span class="t-comment">// Consistency is the key</span></pre>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════
+         SECTION 2 ─ QUICK INFO
+    ══════════════════════════════════════════════ -->
+    <section id="about-quick-info" class="about-section">
+        <div class="about-container">
+
+            <h2 class="about-section-title reveal">
+                <span class="title-dot"></span>
+                QUICK INFO
+                <span class="title-dot"></span>
+            </h2>
+
+            <div class="quick-info-grid reveal-group">
+
+                <div class="qi-card about-card reveal">
+                    <div class="qi-icon-wrap about-icon-circle">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="qi-title about-card-title">Education</h3>
+                    <p class="qi-text about-card-text"
+                       th:text="${about != null && about.education != null && !about.education.isEmpty()
+                                  ? about.education[0].degree + ', ' + about.education[0].institution
+                                  : 'B.Sc in Computer Science & Engineering, Khulna University of Agriculture'}">
+                        B.Sc in Computer Science &amp; Engineering,
+                        Khulna University of Agriculture
+                    </p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="qi-card about-card reveal">
+                    <div class="qi-icon-wrap about-icon-circle">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <h3 class="qi-title about-card-title">Focus</h3>
+                    <p class="qi-text about-card-text">DSA • Java • OOP<br>DBMS • Web Dev</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="qi-card about-card reveal">
+                    <div class="qi-icon-wrap about-icon-circle">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="qi-title about-card-title">Goal</h3>
+                    <p class="qi-text about-card-text">To become a successful Software Engineer</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="qi-card about-card reveal">
+                    <div class="qi-icon-wrap about-icon-circle">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3 class="qi-title about-card-title">Lifestyle</h3>
+                    <p class="qi-text about-card-text">Gym &amp; Fitness<br>Keep body strong, mind stronger.</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════
+         SECTION 3 ─ WHAT I DO
+    ══════════════════════════════════════════════ -->
+    <section id="about-what-i-do" class="about-section">
+        <div class="about-container">
+
+            <h2 class="about-section-title reveal">
+                <span class="title-dot"></span>
+                WHAT I DO
+                <span class="title-dot"></span>
+            </h2>
+
+            <div class="wid-grid reveal-group">
+
+                <div class="wid-card about-card reveal">
+                    <div class="wid-icon-wrap about-icon-square">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="wid-content">
+                        <h3 class="wid-title about-card-title">Development</h3>
+                        <p class="wid-text about-card-text">Building clean, efficient and scalable software solutions.</p>
+                    </div>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="wid-card about-card reveal">
+                    <div class="wid-icon-wrap about-icon-square">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <div class="wid-content">
+                        <h3 class="wid-title about-card-title">Problem Solving</h3>
+                        <p class="wid-text about-card-text">Solving DSA problems and algorithmic challenges.</p>
+                    </div>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="wid-card about-card reveal">
+                    <div class="wid-icon-wrap about-icon-square">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="wid-content">
+                        <h3 class="wid-title about-card-title">Continuous Learning</h3>
+                        <p class="wid-text about-card-text">Exploring new technologies and improving every day to stay better.</p>
+                    </div>
+                    <div class="about-card-accent"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════
+         SECTION 4 ─ EDUCATION JOURNEY
+    ══════════════════════════════════════════════ -->
+    <section id="about-education" class="about-section">
+        <div class="about-container">
+
+            <h2 class="about-section-title reveal">
+                <span class="title-dot"></span>
+                EDUCATION JOURNEY
+                <span class="title-dot"></span>
+            </h2>
+
+            <!-- ── SVG HORIZONTAL TIMELINE ── -->
+            <div class="edu-svg-wrap reveal">
+                <!--
+                    viewBox changed from "0 0 1000 220"  →  "0 -15 1000 255"
+                    • Top boundary shifted up 15px  (gives room for Future Goal label)
+                    • Total SVG height 255 + 15 = 270px viewport  (was 220)
+                    • All node/path x,y coords unchanged – only text label y-values adjusted
+                      so every label has ≥ 14 px gap from the nearest pulse-ring edge.
+                -->
+                <svg class="edu-svg"
+                     viewBox="0 -15 1000 255"
+                     preserveAspectRatio="xMidYMid meet"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <!-- ══ DEFS: Glow filters ══ -->
+                    <defs>
+                        <!-- Normal glow (path & nodes) -->
+                        <filter id="edu-glow" x="-40%" y="-40%" width="180%" height="180%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <!-- Strong glow (peak B.Sc node & Future Goal) -->
+                        <filter id="edu-glow-strong" x="-60%" y="-60%" width="220%" height="220%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <!-- Vehicle glow -->
+                        <filter id="edu-glow-vehicle" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- ══ GLOW PATH (blurred clone behind main path) ══ -->
+                    <path class="edu-glow-path"
+                          filter="url(#edu-glow)"
+                          fill="none"
+                          stroke="#00ff88"
+                          stroke-width="4"
+                          opacity="0.35"
+                          d="M 100,165
+                             C 180,165 240,148 340,143
+                             C 420,138 480,90  580,82
+                             C 660,75  730,55  850,48"/>
+
+                    <!-- ══ MAIN DRAW PATH (JS will animate stroke-dashoffset) ══ -->
+                    <!--
+                        stroke-dasharray & stroke-dashoffset are set by about.js
+                        using path.getTotalLength() so the line draws progressively
+                        as the vehicle moves from SSC → HSC → B.Sc → Future Goal
+                    -->
+                    <path id="edu-draw-path"
+                          class="edu-main-path"
+                          fill="none"
+                          stroke="#00ff88"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          d="M 100,165
+                             C 180,165 240,148 340,143
+                             C 420,138 480,90  580,82
+                             C 660,75  730,55  850,48"/>
+
+                    <!-- ══════════════════════════════════════════
+                         VEHICLE 1: CAR  (SSC → HSC segment)
+                    ══════════════════════════════════════════ -->
+                    <g id="edu-car" class="edu-vehicle" filter="url(#edu-glow-vehicle)" style="display:none">
+                        <!-- Car body -->
+                        <rect x="-22" y="-10" width="44" height="18" rx="5"
+                              fill="none" stroke="#00ff88" stroke-width="1.8" opacity="0.95"/>
+                        <!-- Car roof -->
+                        <rect x="-12" y="-22" width="26" height="13" rx="4"
+                              fill="none" stroke="#00ff88" stroke-width="1.8" opacity="0.9"/>
+                        <!-- Windshield line -->
+                        <line x1="-12" y1="-9" x2="-12" y2="-22" stroke="#00ff88" stroke-width="1.2" opacity="0.6"/>
+                        <line x1="14"  y1="-9" x2="14"  y2="-22" stroke="#00ff88" stroke-width="1.2" opacity="0.6"/>
+                        <!-- Wheels -->
+                        <circle cx="-12" cy="10" r="6"
+                                fill="#001a0d" stroke="#00ff88" stroke-width="1.8"/>
+                        <circle cx="12"  cy="10" r="6"
+                                fill="#001a0d" stroke="#00ff88" stroke-width="1.8"/>
+                        <!-- Wheel spokes -->
+                        <line x1="-12" y1="4"  x2="-12" y2="16" stroke="#00ff88" stroke-width="1.2"/>
+                        <line x1="-18" y1="10" x2="-6"  y2="10" stroke="#00ff88" stroke-width="1.2"/>
+                        <line x1="12"  y1="4"  x2="12"  y2="16" stroke="#00ff88" stroke-width="1.2"/>
+                        <line x1="6"   y1="10" x2="18"  y2="10" stroke="#00ff88" stroke-width="1.2"/>
+                        <!-- Headlight -->
+                        <rect x="20" y="-5" width="5" height="8" rx="2"
+                              fill="#00ff88" opacity="0.95"/>
+                        <!-- Headlight beam (small lines) -->
+                        <line x1="26" y1="-3" x2="31" y2="-5" stroke="#00ff88" stroke-width="1" opacity="0.5"/>
+                        <line x1="26" y1="1"  x2="31" y2="3"  stroke="#00ff88" stroke-width="1" opacity="0.5"/>
+                        <!-- Exhaust smoke dots -->
+                        <circle cx="-28" cy="4"  r="2.5" fill="#00ff88" opacity="0.4"  class="edu-exhaust-1"/>
+                        <circle cx="-35" cy="2"  r="1.8" fill="#00ff88" opacity="0.25" class="edu-exhaust-2"/>
+                        <circle cx="-41" cy="0"  r="1.2" fill="#00ff88" opacity="0.12" class="edu-exhaust-3"/>
+                        <!-- Car label -->
+                        <text x="0" y="-30" text-anchor="middle"
+                              font-family="'Courier New', monospace"
+                              font-size="8" fill="#00ff88" opacity="0.9">CAR</text>
+                    </g>
+
+                    <!-- ══════════════════════════════════════════
+                         VEHICLE 2: ROCKET  (HSC → B.Sc segment)
+                    ══════════════════════════════════════════ -->
+                    <g id="edu-rocket" class="edu-vehicle" filter="url(#edu-glow-vehicle)" style="display:none">
+                        <!-- Body -->
+                        <ellipse cx="0" cy="0" rx="9" ry="20"
+                                 fill="none" stroke="#00ff88" stroke-width="1.8" opacity="0.95"/>
+                        <!-- Nose cone -->
+                        <polygon points="0,-30 -7,-12 7,-12"
+                                 fill="none" stroke="#00ff88" stroke-width="1.8" opacity="0.95"/>
+                        <!-- Fins -->
+                        <polygon points="-9,12 -18,26 -4,16"
+                                 fill="none" stroke="#00cc66" stroke-width="1.4" opacity="0.85"/>
+                        <polygon points="9,12   18,26  4,16"
+                                 fill="none" stroke="#00cc66" stroke-width="1.4" opacity="0.85"/>
+                        <!-- Window -->
+                        <circle cx="0" cy="-5" r="5"
+                                fill="#001a0d" stroke="#00ff88" stroke-width="1.4"/>
+                        <!-- Window shine -->
+                        <circle cx="-1" cy="-6" r="1.5" fill="#00ff88" opacity="0.6"/>
+                        <!-- Flame outer -->
+                        <ellipse cx="0" cy="28" rx="5" ry="8"  fill="#ffaa00" opacity="0.85"/>
+                        <!-- Flame inner -->
+                        <ellipse cx="0" cy="27" rx="2.5" ry="5" fill="#ffff88" opacity="0.9"/>
+                        <!-- Rocket label -->
+                        <text x="0" y="-38" text-anchor="middle"
+                              font-family="'Courier New', monospace"
+                              font-size="8" fill="#00ff88" opacity="0.9">ROCKET</text>
+                    </g>
+
+                    <!-- ══════════════════════════════════════════
+                         VEHICLE 3: WALKING MAN  (B.Sc → Future Goal)
+                    ══════════════════════════════════════════ -->
+                    <g id="edu-man" class="edu-vehicle" filter="url(#edu-glow-vehicle)" style="display:none">
+                        <!-- Head -->
+                        <circle cx="0" cy="-26" r="7"
+                                fill="none" stroke="#00ff88" stroke-width="1.8" opacity="0.95"/>
+                        <!-- Body -->
+                        <line x1="0" y1="-19" x2="0" y2="0"
+                              stroke="#00ff88" stroke-width="2.5"/>
+                        <!-- Arms -->
+                        <line id="edu-man-arm1" x1="0" y1="-13" x2="-10" y2="-4"
+                              stroke="#00ff88" stroke-width="2"/>
+                        <line id="edu-man-arm2" x1="0" y1="-13" x2=" 10" y2="-4"
+                              stroke="#00ff88" stroke-width="2"/>
+                        <!-- Legs -->
+                        <line id="edu-man-leg1" x1="0" y1="0" x2="-8" y2="16"
+                              stroke="#00ff88" stroke-width="2"/>
+                        <line id="edu-man-leg2" x1="0" y1="0" x2=" 8" y2="16"
+                              stroke="#00ff88" stroke-width="2"/>
+                        <!-- Man label -->
+                        <text x="0" y="-36" text-anchor="middle"
+                              font-family="'Courier New', monospace"
+                              font-size="8" fill="#00ff88" opacity="0.9">WALK</text>
+                    </g>
+
+                    <!-- ══════════════════════════════════════════
+                         NODE 1 : SSC 2020
+                         Circle center: cx=100 cy=165  r=22  pulse-r=28
+                         • Pulse top  = 165-28 = 137
+                         • Pulse bot  = 165+28 = 193
+                         Year label ABOVE:  y=118  (gap from pulse top: 19px)
+                         "SSC" label BELOW: y=210  (gap from pulse bot: 17px)
+                         "2020" sub  BELOW: y=224
+                    ══════════════════════════════════════════ -->
+                    <g class="edu-node-g" style="--nd:0.3s">
+
+                        <!-- Year label ABOVE -->
+                        <text x="100" y="118" class="edu-svg-year" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="11"
+                              fill="#00ff88" opacity="0.8">2020</text>
+
+                        <!-- Pulse ring -->
+                        <circle cx="100" cy="165" r="28" class="edu-pulse-ring"
+                                fill="none" stroke="#00ff88" stroke-width="1"
+                                opacity="0.3"/>
+                        <!-- Dark fill bg -->
+                        <circle cx="100" cy="165" r="22"
+                                fill="#001a0d" stroke="none"/>
+                        <!-- Outer ring -->
+                        <circle cx="100" cy="165" r="22" class="edu-outer-ring"
+                                fill="none" stroke="#00ff88" stroke-width="1.8"
+                                filter="url(#edu-glow)"/>
+
+                        <!-- ICON: Document / file lines -->
+                        <rect x="91" y="154" width="18" height="22" rx="2"
+                              fill="none" stroke="#00ff88" stroke-width="1.6"/>
+                        <!-- Folded corner -->
+                        <polyline points="103,154 109,154 109,161 103,161 103,154"
+                                  fill="#001a0d" stroke="#00ff88" stroke-width="1.2"/>
+                        <!-- Lines inside document -->
+                        <line x1="93" y1="163" x2="107" y2="163" stroke="#00ff88" stroke-width="1.2"/>
+                        <line x1="93" y1="167" x2="107" y2="167" stroke="#00ff88" stroke-width="1.2"/>
+                        <line x1="93" y1="171" x2="102" y2="171" stroke="#00ff88" stroke-width="1.2"/>
+
+                        <!-- Label BELOW -->
+                        <text x="100" y="210" class="edu-svg-label" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="12"
+                              font-weight="bold" fill="#00ff88">SSC</text>
+                        <text x="100" y="224" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="9"
+                              fill="#00ff88" opacity="0.6">2020</text>
+                    </g>
+
+                    <!-- ══════════════════════════════════════════
+                         NODE 2 : HSC 2022
+                         Circle center: cx=340 cy=143  r=22  pulse-r=28
+                         • Pulse top  = 143-28 = 115
+                         • Pulse bot  = 143+28 = 171
+                         Year label ABOVE:  y=98   (gap from pulse top: 17px)
+                         "HSC" label BELOW: y=186  (gap from pulse bot: 15px)
+                    ══════════════════════════════════════════ -->
+                    <g class="edu-node-g" style="--nd:0.65s">
+
+                        <!-- Year label ABOVE -->
+                        <text x="340" y="98" class="edu-svg-year" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="11"
+                              fill="#00ff88" opacity="0.8">2022</text>
+
+                        <!-- Pulse ring -->
+                        <circle cx="340" cy="143" r="28" class="edu-pulse-ring"
+                                fill="none" stroke="#00ff88" stroke-width="1"
+                                opacity="0.3"/>
+                        <!-- Dark fill bg -->
+                        <circle cx="340" cy="143" r="22"
+                                fill="#001a0d" stroke="none"/>
+                        <!-- Outer ring -->
+                        <circle cx="340" cy="143" r="22" class="edu-outer-ring"
+                                fill="none" stroke="#00ff88" stroke-width="1.8"
+                                filter="url(#edu-glow)"/>
+
+                        <!-- ICON: Open book -->
+                        <path d="M328,136 C328,136 334,134 340,136 C346,134 352,136 352,136 L352,152 C352,152 346,150 340,152 C334,150 328,152 328,152 Z"
+                              fill="none" stroke="#00ff88" stroke-width="1.6"/>
+                        <line x1="340" y1="136" x2="340" y2="152"
+                              stroke="#00ff88" stroke-width="1.4"/>
+                        <!-- Book page lines left -->
+                        <line x1="330" y1="139" x2="338" y2="138" stroke="#00ff88" stroke-width="1" opacity="0.7"/>
+                        <line x1="330" y1="143" x2="338" y2="142" stroke="#00ff88" stroke-width="1" opacity="0.7"/>
+                        <line x1="330" y1="147" x2="338" y2="146" stroke="#00ff88" stroke-width="1" opacity="0.7"/>
+                        <!-- Book page lines right -->
+                        <line x1="342" y1="138" x2="350" y2="139" stroke="#00ff88" stroke-width="1" opacity="0.7"/>
+                        <line x1="342" y1="142" x2="350" y2="143" stroke="#00ff88" stroke-width="1" opacity="0.7"/>
+                        <line x1="342" y1="146" x2="350" y2="147" stroke="#00ff88" stroke-width="1" opacity="0.7"/>
+
+                        <!-- Label BELOW -->
+                        <text x="340" y="186" class="edu-svg-label" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="12"
+                              font-weight="bold" fill="#00ff88">HSC</text>
+                    </g>
+
+                    <!-- ══════════════════════════════════════════
+                         NODE 3 : B.Sc  2023–Present  (PEAK)
+                         Circle center: cx=580 cy=82  r=24  pulse-r=34 (outer), 28 (inner)
+                         • Outer pulse top  = 82-34 = 48
+                         • Outer pulse bot  = 82+34 = 116
+                         Year label ABOVE:  y=30   (gap from pulse top: 18px)
+                         "B.Sc" label BELOW:y=128  (gap from pulse bot: 12px)
+                    ══════════════════════════════════════════ -->
+                    <g class="edu-node-g edu-node-peak" style="--nd:1.0s">
+
+                        <!-- Year label ABOVE -->
+                        <text x="580" y="30" class="edu-svg-year edu-year-accent" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="11"
+                              fill="#00ff88">2023 – Present</text>
+
+                        <!-- Pulse rings (double for peak) -->
+                        <circle cx="580" cy="82" r="34" class="edu-pulse-ring edu-pulse-bright"
+                                fill="none" stroke="#00ff88" stroke-width="1"
+                                opacity="0.2"/>
+                        <circle cx="580" cy="82" r="28" class="edu-pulse-ring"
+                                fill="none" stroke="#00ff88" stroke-width="1"
+                                opacity="0.35"/>
+                        <!-- Dark fill bg -->
+                        <circle cx="580" cy="82" r="24"
+                                fill="#001a0d" stroke="none"/>
+                        <!-- Outer ring (bright) -->
+                        <circle cx="580" cy="82" r="24" class="edu-outer-ring edu-ring-bright"
+                                fill="none" stroke="#00ff88" stroke-width="2.2"
+                                filter="url(#edu-glow-strong)"/>
+
+                        <!-- ICON: Graduation cap -->
+                        <!-- Board (diamond top) -->
+                        <polygon points="580,66 596,74 580,82 564,74"
+                                 fill="none" stroke="#00ff88" stroke-width="1.6"/>
+                        <!-- Cap body / stage drop -->
+                        <path d="M570,74 L570,86 Q580,91 590,86 L590,74"
+                              fill="none" stroke="#00ff88" stroke-width="1.6"/>
+                        <!-- Tassel string -->
+                        <line x1="596" y1="74" x2="596" y2="84"
+                              stroke="#00ff88" stroke-width="1.4"/>
+                        <!-- Tassel end -->
+                        <circle cx="596" cy="85" r="2" fill="#00ff88"/>
+
+                        <!-- Label BELOW -->
+                        <text x="580" y="128" class="edu-svg-label edu-label-accent" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="13"
+                              font-weight="bold" fill="#00ff88"
+                              filter="url(#edu-glow)">B.Sc</text>
+                    </g>
+
+                    <!-- ══════════════════════════════════════════
+                         NODE 4 : FUTURE GOAL
+                         Circle center: cx=850 cy=48  r=24  pulse-r=34 (outer), 28 (inner)
+                         • Outer pulse top  = 48-34 = 14
+                         • Outer pulse bot  = 48+34 = 82
+                         Year label ABOVE:  y=0    (gap from pulse top: 14px;
+                                                    viewBox now starts at y=-15 so fully visible)
+                         "S.E." label BELOW:y=94   (gap from pulse bot: 12px)
+                    ══════════════════════════════════════════ -->
+                    <g class="edu-node-g edu-node-future" style="--nd:1.4s">
+
+                        <!-- Year label ABOVE -->
+                        <text x="850" y="0" class="edu-svg-year edu-year-future" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="11"
+                              fill="#00ff88">Future Goal</text>
+
+                        <!-- Pulse rings -->
+                        <circle cx="850" cy="48" r="34" class="edu-pulse-ring edu-pulse-future"
+                                fill="none" stroke="#00ff88" stroke-width="1"
+                                opacity="0.2"/>
+                        <circle cx="850" cy="48" r="28" class="edu-pulse-ring"
+                                fill="none" stroke="#00ff88" stroke-width="1"
+                                opacity="0.3"/>
+                        <!-- Dark fill bg -->
+                        <circle cx="850" cy="48" r="24"
+                                fill="#001a0d" stroke="none"/>
+                        <!-- Outer ring (bright) -->
+                        <circle cx="850" cy="48" r="24" class="edu-outer-ring edu-ring-bright"
+                                fill="none" stroke="#00ff88" stroke-width="2.2"
+                                filter="url(#edu-glow-strong)"/>
+
+                        <!-- ICON: Star -->
+                        <polygon points="850,32  854,43  866,43  856.5,50  860,61  850,54  840,61  843.5,50  834,43  846,43"
+                                 fill="none" stroke="#00ff88" stroke-width="1.6"
+                                 stroke-linejoin="round"/>
+
+                        <!-- Label BELOW -->
+                        <text x="850" y="94" class="edu-svg-label" text-anchor="middle"
+                              font-family="'Courier New', monospace" font-size="12"
+                              font-weight="bold" fill="#00ff88"
+                              filter="url(#edu-glow)">S.E.</text>
+                    </g>
+
+                </svg>
+            </div>
+
+            <!-- ── DESCRIPTION CARDS ── -->
+            <div class="edu-desc-row reveal-group">
+
+                <div class="edu-desc-card reveal">
+                    <h4 class="edu-desc-title"
+                        th:text="${about != null && about.education != null && about.education.size() >= 3
+                                   ? about.education[2].statusBadge : 'SSC (Science)'}">SSC (Science)</h4>
+                    <p class="edu-desc-text"
+                       th:text="${about != null && about.education != null && about.education.size() >= 3
+                                  ? about.education[2].description
+                                  : 'Completed Secondary School Certificate with focus on Science group.'}">
+                        Completed Secondary School Certificate with focus on Science group.
+                    </p>
+                </div>
+
+                <div class="edu-desc-card reveal">
+                    <h4 class="edu-desc-title"
+                        th:text="${about != null && about.education != null && about.education.size() >= 2
+                                   ? about.education[1].statusBadge : 'HSC (Science)'}">HSC (Science)</h4>
+                    <p class="edu-desc-text"
+                       th:text="${about != null && about.education != null && about.education.size() >= 2
+                                  ? about.education[1].description
+                                  : 'Completed Higher Secondary Certificate in Science Group successfully.'}">
+                        Completed Higher Secondary Certificate in Science Group successfully.
+                    </p>
+                </div>
+
+                <div class="edu-desc-card reveal">
+                    <h4 class="edu-desc-title"
+                        th:text="${about != null && about.education != null && !about.education.isEmpty()
+                                   ? about.education[0].statusBadge : 'B.Sc in CSE'}">B.Sc in CSE</h4>
+                    <p class="edu-desc-text"
+                       th:text="${about != null && about.education != null && !about.education.isEmpty()
+                                  ? about.education[0].description
+                                  : 'Pursuing B.Sc in CSE at Khwaja Yunus Ali University.'}">
+                        Pursuing B.Sc in Computer Science &amp; Engineering at Khwaja Yunus Ali University.
+                    </p>
+                </div>
+
+                <div class="edu-desc-card reveal">
+                    <h4 class="edu-desc-title">Software Engineer</h4>
+                    <p class="edu-desc-text">
+                        Aspiring to become a skilled Software Engineer and build impactful solutions for the world.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════
+         SECTION 5 ─ INTERESTS & HOBBIES
+    ══════════════════════════════════════════════ -->
+    <section id="about-hobbies" class="about-section" style="padding-bottom: 90px;">
+        <div class="about-container">
+
+            <h2 class="about-section-title reveal">
+                <span class="title-dot"></span>
+                INTERESTS &amp; HOBBIES
+                <span class="title-dot"></span>
+            </h2>
+
+            <div class="hobbies-grid reveal-group">
+
+                <div class="hobby-card about-card reveal">
+                    <div class="hobby-icon">🏋️</div>
+                    <h4 class="hobby-name">Gym</h4>
+                    <p class="hobby-desc">Fitness Enthusiast</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="hobby-card about-card reveal">
+                    <div class="hobby-icon">🎮</div>
+                    <h4 class="hobby-name">Gaming</h4>
+                    <p class="hobby-desc">Esports &amp; Casual Games</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="hobby-card about-card reveal">
+                    <div class="hobby-icon">📷</div>
+                    <h4 class="hobby-name">Photography</h4>
+                    <p class="hobby-desc"
+                       th:text="${about != null && about.hobbies != null
+                                  ? about.hobbies.?[name == 'Photography'][0]?.description
+                                  : 'Capturing Moments'}">Capturing Moments</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="hobby-card about-card reveal">
+                    <div class="hobby-icon">💻</div>
+                    <h4 class="hobby-name">Coding</h4>
+                    <p class="hobby-desc">Turning Ideas into Code</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="hobby-card about-card reveal">
+                    <div class="hobby-icon">📚</div>
+                    <h4 class="hobby-name">Learning</h4>
+                    <p class="hobby-desc"
+                       th:text="${about != null && about.hobbies != null
+                                  ? about.hobbies.?[name == 'Learning'][0]?.description
+                                  : 'Exploring New Technologies'}">Exploring New Technologies</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+                <div class="hobby-card about-card reveal">
+                    <div class="hobby-icon">🧩</div>
+                    <h4 class="hobby-name">Problem Solving</h4>
+                    <p class="hobby-desc"
+                       th:text="${about != null && about.hobbies != null
+                                  ? about.hobbies.?[name == 'Problem Solving'][0]?.description
+                                  : 'Solving DSA Challenges'}">Solving DSA Challenges</p>
+                    <div class="about-card-accent"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SCRIPTS
+    ══════════════════════════════════════════════ -->
+    <script th:src="@{/js/about.js}" src="/js/about.js"></script>
+
+    <!-- Scroll Reveal -->
+    <script>
+        (function () {
+            var revealEls = document.querySelectorAll('.about-page .reveal');
+            if (!revealEls.length) return;
+            var obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.10 });
+            revealEls.forEach(function (el) { obs.observe(el); });
+        })();
+    </script>
+
+</main>
+</body>
+</html>

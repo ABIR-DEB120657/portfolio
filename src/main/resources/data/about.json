@@ -1,0 +1,82 @@
+{
+  "name": "Abir Deb",
+  "tagline": "Java Developer · CSE Student · Backend Enthusiast",
+  "whoIAm": "a passionate backend developer currently pursuing Computer Science & Engineering at Khwaja Yunus Ali University (Batch 18). I focus on clean OOP architecture, robust backend systems with Spring Boot, and deep exploration of Data Structures & Algorithms.",
+  "whatIDo": "Beyond backend development, I explore full-stack applications with React & Spring Boot, problem solving with DSA, and modern web experiences. I love building systems that are both technically solid and visually clean.",
+
+  "quickInfo": {
+    "location": "Bangladesh",
+    "degree": "B.Sc in CSE (Running)",
+    "languages": "Bengali, English",
+    "status": "Available for work"
+  },
+
+  "education": [
+    {
+      "degree": "B.Sc in Computer Science & Engineering",
+      "institution": "Khwaja Yunus Ali University",
+      "statusBadge": "B.Sc in CSE",
+      "passingYear": "2023 – Present",
+      "result": "Running",
+      "description": "Pursuing B.Sc in Computer Science & Engineering at Khulna University of Agriculture.",
+      "tags": ["Data Structures", "Algorithms", "OOP", "DBMS", "Web Dev"]
+    },
+    {
+      "degree": "Higher Secondary Certificate (HSC)",
+      "institution": "Science Group",
+      "statusBadge": "HSC (Science)",
+      "passingYear": "2022",
+      "result": "4.28",
+      "description": "Completed Higher Secondary Certificate in Science Group.",
+      "tags": []
+    },
+    {
+      "degree": "Secondary School Certificate (SSC)",
+      "institution": "Science Group",
+      "statusBadge": "SSC (Science)",
+      "passingYear": "2020",
+      "result": "5.00",
+      "description": "Completed Secondary School Certificate with focus on Science.",
+      "tags": []
+    }
+  ],
+
+  "hobbies": [
+    {
+      "name": "Gym",
+      "icon": "fas fa-dumbbell",
+      "emoji": "🏋️",
+      "description": "Fitness Enthusiast"
+    },
+    {
+      "name": "Gaming",
+      "icon": "fas fa-gamepad",
+      "emoji": "🎮",
+      "description": "Esports & Casual Games"
+    },
+    {
+      "name": "Photography",
+      "icon": "fas fa-camera",
+      "emoji": "📷",
+      "description": "Capturing Moments"
+    },
+    {
+      "name": "Coding",
+      "icon": "fas fa-code",
+      "emoji": "💻",
+      "description": "Turning Ideas into Code"
+    },
+    {
+      "name": "Learning",
+      "icon": "fas fa-book",
+      "emoji": "📚",
+      "description": "Exploring New Technologies"
+    },
+    {
+      "name": "Problem Solving",
+      "icon": "fas fa-chess",
+      "emoji": "🧩",
+      "description": "Solving DSA Challenges"
+    }
+  ]
+}

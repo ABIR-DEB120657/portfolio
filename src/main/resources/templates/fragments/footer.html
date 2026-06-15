@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<footer th:fragment="footer">
+    <div class="container" style="padding-top: 40px; padding-bottom: 40px; text-align: center; position: relative; z-index: 1;">
+
+        <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 20px;">
+            <a href="https://github.com/" target="_blank"
+               class="btn btn-outline"
+               style="padding: 8px 18px; font-size: 0.75rem;">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://linkedin.com/" target="_blank"
+               class="btn btn-outline"
+               style="padding: 8px 18px; font-size: 0.75rem;">
+                <i class="fab fa-linkedin-in"></i> LinkedIn
+            </a>
+            <a href="mailto:abir@email.com"
+               class="btn btn-outline"
+               style="padding: 8px 18px; font-size: 0.75rem;">
+                <i class="fas fa-envelope"></i> Email
+            </a>
+        </div>
+
+        <p class="text-muted" style="font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em;">
+            &copy; 2026 <span class="text-cyan">Abir Deb</span>. Crafted with
+            <i class="fas fa-heart" style="color: #ff4757;"></i> &amp; Spring Boot
+        </p>
+
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          'Projects | Abir Deb',
+          ~{::main},
+          @{/css/projects.css},
+          @{/js/projects.js}
+      )}">
+<head></head>
+<body>
+
+<main>
+
+    <!-- ============ HERO ============ -->
+    <section class="projects-hero">
+        <span class="projects-hero-eyebrow"><span></span>// portfolio</span>
+        <h1>My <em>Projects</em></h1>
+        <p>A collection of things I've designed, broken, and rebuilt</p>
+    </section>
+
+    <!-- ============ ARENA ============ -->
+    <section class="c-arena" id="c-arena">
+
+        <div class="c-arena-grid">
+
+            <!-- LEFT: Counter -->
+            <div class="c-ctr">
+                <span class="c-ctr-num" id="cNum">01</span>
+                <div class="c-ctr-bar">
+                    <div class="c-ctr-fill" id="cFill"></div>
+                </div>
+                <span class="c-ctr-tot" id="cTot">00</span>
+            </div>
+
+            <!-- CENTER: Card Stack — JS builds cards here -->
+            <div class="c-stack" id="cStack"></div>
+
+            <!-- RIGHT: Nav buttons -->
+            <div class="c-nav">
+                <button class="c-nb" id="btnPrev" disabled aria-label="Previous project">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+                <button class="c-nb" id="btnNext" aria-label="Next project">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- PAPER AIRPLANE -->
+        <div id="pPlane" style="display:none; position:absolute; width:46px; height:46px; pointer-events:none; z-index:999;">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="6,32 58,8 36,56 30,38" fill="rgba(0,245,255,0.12)" stroke="var(--cyan)" stroke-width="1.6"/>
+                <polygon points="6,32 30,38 36,56 22,40" fill="rgba(0,245,255,0.22)" stroke="var(--cyan)" stroke-width="1.2"/>
+                <line x1="6" y1="32" x2="58" y2="8" stroke="var(--cyan)" stroke-width="0.8" opacity="0.6"/>
+                <line x1="30" y1="38" x2="58" y2="8" stroke="var(--cyan)" stroke-width="0.8" opacity="0.4"/>
+            </svg>
+        </div>
+
+        <!-- GITHUB LOGO — id must be cGh (JS uses this) -->
+        <div class="c-gh" id="cGh">
+            <svg viewBox="0 0 100 100" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+                <path fill="var(--cyan)"
+                      d="M50 5C25.1 5 5 25.1 5 50c0 19.9 12.9 36.8 30.8 42.8
+                         2.3.4 3.1-1 3.1-2.2v-7.7c-12.6 2.7-15.3-6.1-15.3-6.1
+                         -2.1-5.3-5.1-6.7-5.1-6.7-4.1-2.8.3-2.7.3-2.7
+                         4.6.3 7 4.7 7 4.7 4.1 7 10.7 5 13.3 3.8
+                         .4-3 1.6-5 2.9-6.1-10.1-1.1-20.7-5-20.7-22.4
+                         0-4.9 1.8-9 4.7-12.1-.5-1.2-2-5.7.4-11.9
+                         0 0 3.8-1.2 12.5 4.7 3.6-1 7.5-1.5 11.4-1.5
+                         3.8 0 7.7.5 11.4 1.5 8.6-5.9 12.4-4.7 12.4-4.7
+                         2.5 6.2.9 10.7.4 11.9 2.9 3.2 4.7 7.2 4.7 12.1
+                         0 17.4-10.6 21.2-20.7 22.3 1.6 1.4 3.1 4.1 3.1 8.3
+                         v12.3c0 1.2.8 2.6 3.1 2.2C82.1 86.8 95 69.9 95 50
+                         95 25.1 74.9 5 50 5z"/>
+            </svg>
+        </div>
+
+    </section>
+
+    <!-- ============ PROJECT MODAL ============ -->
+    <div class="project-modal" id="projectModal" aria-hidden="true">
+        <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+            <span class="modal-featured-badge" id="modalFeaturedBadge">
+                <i class="fas fa-star"></i> Featured
+            </span>
+
+            <button class="modal-close" id="modalClose" type="button" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-body">
+                <span class="modal-category" id="modalCategory">Category</span>
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+                <p class="modal-description" id="modalDescription"></p>
+                <div class="modal-tags" id="modalTags"></div>
+                <div class="modal-actions">
+                    <a id="modalGithub" class="modal-btn modal-btn-outline" href="#" target="_blank">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                    <a id="modalLive" class="modal-btn modal-btn-primary" href="#" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Live
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         Project data: Thymeleaf injects JSON here.
+         MUST be inside <main> so th:replace includes it.
+         ═══════════════════════════════════════════ -->
+    <script type="application/json" id="projectsData" th:utext="${projectsJson}">[]</script>
+
+</main>
+
+</body>
+</html>
