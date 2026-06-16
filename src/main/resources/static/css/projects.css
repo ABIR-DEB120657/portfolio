@@ -234,24 +234,25 @@
     animation: cGlow 2.8s ease-in-out infinite, tSpin 4s linear infinite;
 }
 
+/* FIX 3: Reduced blur values for depth layers */
 .c-card[data-depth="1"] {
     transform: translateY(18px) scale(0.955);
     opacity: 0.72;
-    filter: blur(0.7px);
+    filter: blur(0.3px);
     z-index: 7;
 }
 
 .c-card[data-depth="2"] {
     transform: translateY(36px) scale(0.91);
     opacity: 0.42;
-    filter: blur(2px);
+    filter: blur(0.8px);
     z-index: 4;
 }
 
 .c-card[data-depth="3"] {
     transform: translateY(54px) scale(0.865);
     opacity: 0.2;
-    filter: blur(4px);
+    filter: blur(1.5px);
     z-index: 1;
 }
 
@@ -273,6 +274,11 @@
     animation: cEnter 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
     z-index: 20 !important;
     transition: none !important;
+}
+
+/* FIX 4: Pause cGlow / tSpin temporarily — toggle via JS */
+.c-card.c-busy-pause {
+    animation-play-state: paused;
 }
 
 /* ── Shake (error / boundary) ── */
@@ -429,13 +435,13 @@
     font-size: 0.7rem;
 }
 
-/* Scanline shimmer on front card */
+/* FIX 2: Scanline shimmer — static left, GPU-only translateX animation */
 .c-card[data-depth="0"]::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 50%;
+    left: 0;
+    width: 55%;
     height: 100%;
     background: linear-gradient(
             105deg,
@@ -443,15 +449,16 @@
             rgba(0, 245, 255, 0.035) 50%,
             transparent 60%
     );
+    transform: translateX(-110%);
     animation: shimmer 4.5s ease-in-out infinite;
     pointer-events: none;
     z-index: 2;
 }
 
 @keyframes shimmer {
-    0%   { left: -100%; }
-    50%  { left: 150%; }
-    100% { left: 150%; }
+    0%   { transform: translateX(-110%); }
+    50%  { transform: translateX(200%); }
+    100% { transform: translateX(200%); }
 }
 
 /* =========================================================
@@ -579,48 +586,41 @@
     }
 }
 
-/* Card exit: shrinks up and disappears */
+/* FIX 1: Card exit — border-radius lines removed */
 @keyframes cExit {
     0%   {
         transform: translateY(0) scale(1.00) rotate(0deg);
         opacity: 1;
-        border-radius: 22px;
     }
     30%  {
         transform: translateY(-45px) scale(0.80) rotate(-2.5deg);
         opacity: 0.85;
-        border-radius: 26px;
     }
     60%  {
         transform: translateY(-88px) scale(0.48) rotate(-5deg);
         opacity: 0.55;
-        border-radius: 50%;
     }
     100% {
         transform: translateY(-112px) scale(0.08) rotate(-7deg);
         opacity: 0;
-        border-radius: 50%;
     }
 }
 
-/* Card enter: unfolds from GitHub position upward */
+/* FIX 1: Card enter — border-radius lines removed */
 @keyframes cEnter {
     0%   {
         transform: translateY(75px) scale(0.08) rotate(6deg);
         opacity: 0;
-        border-radius: 50%;
         filter: blur(3px);
     }
     35%  {
         transform: translateY(32px) scale(0.50) rotate(2deg);
         opacity: 0.7;
-        border-radius: 28px;
         filter: blur(1px);
     }
     100% {
         transform: translateY(0) scale(1.00) rotate(0deg);
         opacity: 1;
-        border-radius: 22px;
         filter: blur(0);
     }
 }
