@@ -252,9 +252,10 @@
     /* ═══════════════════════════════════════════════
        DO NEXT — front card exits toward GitHub
        Timeline:
-         0ms   → c-exit animation starts on front card
+         0ms   → c-exit starts; c-busy-pause added to incoming front card
          320ms → paper plane launches toward GitHub logo
-         530ms → queue is rearranged; depths reassigned
+         530ms → queue rearranged; depths reassigned
+         870ms → c-busy-pause removed; busy cleared
     ═══════════════════════════════════════════════ */
     function doNext() {
         if (busy) return;
@@ -262,8 +263,14 @@
 
         busy = true;
 
-        var exitIdx  = queue[0];
-        var exitCard = cards[exitIdx];
+        var exitIdx       = queue[0];
+        var exitCard      = cards[exitIdx];
+
+        /* The card that will become depth-0 after the shift.
+           Pause its glow/spin now so the animation doesn't flicker
+           during the busy paint window. */
+        var nextFrontCard = cards[queue[1]];
+        nextFrontCard.classList.add('c-busy-pause');
 
         /* Step 1 — card shrinks/rotates upward */
         exitCard.classList.add('c-exit');
@@ -275,7 +282,7 @@
             });
         }, 320);
 
-        /* Step 3 — rearrange queue */
+        /* Step 3 — rearrange queue; depths reassigned */
         setTimeout(function () {
             exitCard.classList.remove('c-exit');
             exitCard.removeAttribute('data-depth');
@@ -283,23 +290,35 @@
             applyDepths();
             updateUI();
 
-            /* Small cooldown so CSS transitions finish before next action */
-            setTimeout(function () { busy = false; }, 340);
+            /* Cooldown: let CSS transitions finish, then unfreeze glow/spin */
+            setTimeout(function () {
+                nextFrontCard.classList.remove('c-busy-pause');
+                busy = false;
+            }, 340);
         }, 530);
     }
 
     /* ═══════════════════════════════════════════════
        DO PREV — restore most-recent card from GitHub
        Timeline:
-         0ms   → GitHub pulses
+         0ms   → c-busy-pause on current front card; GitHub pulses
          200ms → plane launches back toward stack
-         ~610ms (plane lands) → card enters from below
+         ~610ms (plane lands) → applyDepths(); c-busy-pause removed from
+                  ex-front card (now depth1); entering card gets c-enter
+         ~1110ms → busy cleared
     ═══════════════════════════════════════════════ */
     function doPrev() {
         if (busy) return;
         if (ghQ.length === 0) { shakeStack(); return; }
 
         busy = true;
+
+        /* Pause cGlow/tSpin on the current front card for the entire plane
+           return flight (~410ms). Mirrors the doNext pattern: during the rAF
+           loop we don't want heavy box-shadow + conic-gradient paint fighting
+           the frame budget. Removed once applyDepths() demotes it to depth1. */
+        var currentFrontCard = cards[queue[0]];
+        currentFrontCard.classList.add('c-busy-pause');
 
         /* Step 1 — pulse logo */
         pulseGithub(860);
@@ -308,12 +327,16 @@
         setTimeout(function () {
             flyPlane(false, function () {
 
-                /* Step 3 — plane landed: restore card from ghQ front of queue */
+                /* Step 3 — plane landed: restore card from ghQ to front of queue */
                 var backIdx  = ghQ.pop();
                 queue.unshift(backIdx);
                 applyDepths();
 
+                /* ex-front card is now depth1 — safe to unpause */
+                currentFrontCard.classList.remove('c-busy-pause');
+
                 var backCard = cards[backIdx];
+
                 backCard.classList.add('c-enter');
                 backCard.addEventListener('animationend', function () {
                     backCard.classList.remove('c-enter');
@@ -321,7 +344,9 @@
 
                 updateUI();
 
-                setTimeout(function () { busy = false; }, 500);
+                setTimeout(function () {
+                    busy = false;
+                }, 500);
             });
         }, 200);
     }
