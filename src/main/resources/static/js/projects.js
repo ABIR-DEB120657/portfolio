@@ -496,6 +496,7 @@
         /* ── 5. Button listeners ── */
         btnNext.addEventListener('click', doNext);
         btnPrev.addEventListener('click', doPrev);
+        ghEl.addEventListener('click', doNext);   /* ← নতুন লাইন */
 
         /* ── 6. Keyboard navigation ── */
         document.addEventListener('keydown', function (e) {
