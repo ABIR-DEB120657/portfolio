@@ -49,25 +49,21 @@
    LIGHT THEME VARIABLES — PREMIUM SLATE
 ═══════════════════════════════════════ */
 [data-theme="light"] {
-    /* ── Backgrounds ── */
     --bg-primary:    #f1f5f9;
     --bg-secondary:  #ffffff;
     --bg-card:       #ffffff;
     --bg-card-hover: #f8fafc;
 
-    /* ── Accent — richer emerald for light bg ── */
     --accent:        #059669;
     --accent-hover:  #047857;
     --accent-dim:    rgba(5, 150, 105, 0.10);
     --accent-glow:   rgba(5, 150, 105, 0.25);
     --accent-border: rgba(5, 150, 105, 0.40);
 
-    /* ── Typography ── */
     --text-primary:  #0f172a;
     --text-secondary:#334155;
     --text-muted:    #64748b;
 
-    /* ── Borders & Shadows ── */
     --border:        #e2e8f0;
     --border-hover:  #94a3b8;
     --shadow:        0 1px 3px rgba(15, 23, 42, 0.06),
@@ -216,13 +212,15 @@
             background-color 0.3s ease,
             border-color 0.3s ease,
             color 0.2s ease;
+    -webkit-font-smoothing: antialiased;   /* ← FIX 2: scroll smoothness */
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ═══════════════════════════════════════
    BASE
 ═══════════════════════════════════════ */
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;   /* ← FIX 1: Lenis handles smooth scroll */
     font-size: 16px;
 }
 
@@ -232,14 +230,12 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
-    /* Dot-grid background pattern */
     background-image: radial-gradient(
             circle,
             rgba(255, 255, 255, 0.05) 1px,
             transparent 1px
     );
     background-size: 28px 28px;
-    background-attachment: fixed;
 }
 
 /* Canvas সম্পূর্ণ hide — আর ব্যবহার নেই */
@@ -330,6 +326,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: var(--trans-med);
     position: relative;
     overflow: hidden;
+    will-change: transform;
 }
 .card:hover {
     transform: translateY(-4px);
@@ -433,6 +430,7 @@ h1, h2, h3, h4, h5, h6 {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition: var(--trans-med);
+    will-change: transform;
 }
 .glass-card:hover {
     border-color: var(--accent-border);
@@ -487,6 +485,8 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     border-bottom: 1px solid var(--border);
     transition: background 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;          /* ← FIX 3a: GPU layer */
+    transform: translateZ(0);        /* ← FIX 3b: GPU compositing */
 }
 .site-header.scrolled {
     background: rgba(13, 17, 23, 0.96);
