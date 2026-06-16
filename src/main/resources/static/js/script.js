@@ -14,14 +14,24 @@
          2. Custom Cursor
          3. Scroll Fade-Up
          4. Active Nav Link on Scroll (single-page only)
-         5. Smooth Scroll
+         5. Smooth Scroll (Lenis)
          6. Shockwave Burst + Particles
-         7. About Page — Scroll Reveal       ← NEW (Step 8)
+         7. About Page — Scroll Reveal
    ============================================================ */
 
 /* ═══════════════════════════════════════════════════════════
    0. THEME FLASH PREVENTION
    ═══════════════════════════════════════════════════════════ */
+const lenis = new Lenis({
+    duration: 1.8,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    smoothTouch: true,
+    wheelMultiplier: 0.8,
+    touchMultiplier: 1.5,
+});
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
 (function () {
     var saved = localStorage.getItem('portfolio-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
@@ -105,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ═══════════════════════════════════════════════════
     // 3. SCROLL FADE-UP (IntersectionObserver)
-    //    index page এর .fade-up elements এর জন্য
     // ═══════════════════════════════════════════════════
     const fadeEls = document.querySelectorAll('.fade-up');
     if (fadeEls.length) {
@@ -143,34 +152,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ═══════════════════════════════════════════════════
-    // 5. SMOOTH SCROLL (anchor links)
+    // 5. SMOOTH SCROLL — Lenis দিয়ে
+    //    আগে: scrollIntoView({ behavior: 'smooth' })
+    //    এখন: lenis.scrollTo() — conflict নেই, jank নেই
     // ═══════════════════════════════════════════════════
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            const target = document.querySelector(this.getAttribute('href'));
+            const targetId = this.getAttribute('href');
+            const target   = document.querySelector(targetId);
             if (target) {
                 e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                lenis.scrollTo(target, {
+                    offset: 0,
+                    duration: 1.4,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                });
             }
         });
     });
 
     // ═══════════════════════════════════════════════════
-    // 7. ABOUT PAGE — SCROLL REVEAL          ← NEW
-    //
-    //    .reveal      → opacity 0 + translateY(32px) থেকে শুরু
-    //                   viewport এ ঢুকলে 'visible' class add হয়
-    //                   CSS transition fire করে: fade in + slide up
-    //
-    //    .reveal-group → এর সরাসরি children এ about.css এর
-    //                   nth-child delay কাজ করে (stagger effect)
-    //                   child 1: 0.05s, child 2: 0.12s ... child 6: 0.40s
-    //
-    //    rootMargin: '0px 0px -40px 0px'
-    //                   → element পুরো viewport এ আসার 40px আগেই trigger
-    //                   → smooth feel, কোনো jank নেই
-    //
-    //    threshold: 0.10 → element এর 10% দেখা গেলেই animate শুরু
+    // 7. ABOUT PAGE — SCROLL REVEAL
     // ═══════════════════════════════════════════════════
     initReveal();
 
@@ -182,8 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // unobserve করলে performance ভালো থাকে
-                    // এবং একবার animate হলে আর reset হয় না
                     revealObserver.unobserve(entry.target);
                 }
             });
@@ -198,7 +198,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // ═══════════════════════════════════════════════════
     // 6. SHOCKWAVE BURST + PARTICLES
     //    Hero page এ burst-1/2/3 না থাকলে skip
-    //    (about page এ এই block টা run হবে না)
     // ═══════════════════════════════════════════════════
     const burstRings = [
         document.getElementById('burst-1'),
