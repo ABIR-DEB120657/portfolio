@@ -23,15 +23,26 @@
    0. THEME FLASH PREVENTION
    ═══════════════════════════════════════════════════════════ */
 const lenis = new Lenis({
-    duration: 1.8,
+    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
-    smoothTouch: true,
-    wheelMultiplier: 0.8,
-    touchMultiplier: 1.5,
+    smoothTouch: false,
+    wheelMultiplier: 1.0,
+    touchMultiplier: 1.2,
+    infinite: false,
+    autoRaf: false,
 });
 function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
 requestAnimationFrame(raf);
+// STEP 2 — Scroll Progress Bar update
+lenis.on('scroll', function() {
+    var el = document.getElementById('scrollProgress');
+    if (!el) return;
+    var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    el.style.width = pct.toFixed(2) + '%';
+});
 (function () {
     var saved = localStorage.getItem('portfolio-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
