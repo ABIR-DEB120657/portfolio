@@ -101,6 +101,66 @@
         }
 
         /* ============================================================
+           QUICK-NAV — gold theme (matches cover aesthetic)
+        ============================================================ */
+        .quick-nav {
+            position:fixed;
+            bottom:clamp(20px,4vh,36px);
+            right:clamp(20px,4vw,40px);
+            z-index:9001;
+            display:flex;
+            flex-direction:column;
+            align-items:flex-end;
+            gap:12px;
+        }
+        .quick-nav-toggle {
+            width:46px; height:46px;
+            border-radius:50%;
+            background:rgba(11,11,11,.55);
+            backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+            border:1px solid var(--gold40);
+            display:flex; flex-direction:column;
+            align-items:center; justify-content:center; gap:5px;
+            transition:border-color .3s ease, transform .3s ease;
+        }
+        .quick-nav-toggle:hover { border-color:var(--gold); transform:scale(1.06); }
+        .qn-line {
+            display:block; width:16px; height:1px;
+            background:var(--gold);
+            transition:transform .3s ease, opacity .3s ease;
+        }
+        .quick-nav-toggle.active .qn-line:nth-child(1) { transform:translateY(6px) rotate(45deg); }
+        .quick-nav-toggle.active .qn-line:nth-child(2) { opacity:0; }
+        .quick-nav-toggle.active .qn-line:nth-child(3) { transform:translateY(-6px) rotate(-45deg); }
+
+        .quick-nav-menu {
+            display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+            opacity:0; transform:translateY(10px);
+            pointer-events:none;
+            transition:opacity .3s ease, transform .3s ease;
+        }
+        .quick-nav-menu.active {
+            opacity:1; transform:translateY(0); pointer-events:auto;
+        }
+        .quick-nav-link {
+            font-family:'Inter',sans-serif; font-size:clamp(8px,.85vw,10px);
+            letter-spacing:.35em; text-transform:uppercase; font-weight:300;
+            color:var(--iv55); text-decoration:none;
+            background:rgba(11,11,11,.55);
+            backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+            border:1px solid var(--iv13);
+            padding:8px 18px; border-radius:2px;
+            white-space:nowrap;
+            transition:color .3s ease, border-color .3s ease;
+        }
+        .quick-nav-link:hover { color:var(--gold); border-color:var(--gold40); }
+
+        @media (max-width:768px) {
+            .quick-nav { bottom:18px; right:16px; }
+            .quick-nav-toggle { width:40px; height:40px; }
+        }
+
+        /* ============================================================
            INTRO SCREEN
         ============================================================ */
         #intro {
@@ -548,6 +608,22 @@
     <a class="nav-link" href="/contact">Contact</a>
 </nav>
 
+<!-- Quick-Nav (gold theme) -->
+<div class="quick-nav" id="quickNav">
+    <div class="quick-nav-menu" id="quickNavMenu">
+        <a href="/home" class="quick-nav-link">Home</a>
+        <a href="/about" class="quick-nav-link">About</a>
+        <a href="/skills" class="quick-nav-link">Skills</a>
+        <a href="/projects" class="quick-nav-link">Projects</a>
+        <a href="/contact" class="quick-nav-link">Contact</a>
+    </div>
+    <button class="quick-nav-toggle" id="quickNavToggle" aria-label="Quick navigation">
+        <span class="qn-line"></span>
+        <span class="qn-line"></span>
+        <span class="qn-line"></span>
+    </button>
+</div>
+
 <!-- Intro screen -->
 <div id="intro" aria-hidden="true"></div>
 
@@ -660,12 +736,31 @@
         requestAnimationFrame(ringLoop);
     })();
 
-    /* Hover expand on clickable elements */
-    document.querySelectorAll('a,[role="button"],.sw-list li,.proj-card,.skill-chip')
+    /* Hover expand on clickable elements — Fix: added quick-nav elements */
+    document.querySelectorAll('a,[role="button"],.sw-list li,.proj-card,.skill-chip,.quick-nav-toggle,.quick-nav-link')
         .forEach(el => {
             el.addEventListener('mouseenter', () => { dot.classList.add('hov'); ring.classList.add('hov'); });
             el.addEventListener('mouseleave', () => { dot.classList.remove('hov'); ring.classList.remove('hov'); });
         });
+
+    /* ──────────────────────────────────────────────
+       QUICK-NAV TOGGLE
+    ────────────────────────────────────────────── */
+    const qnToggle = document.getElementById('quickNavToggle');
+    const qnMenu   = document.getElementById('quickNavMenu');
+
+    if (qnToggle && qnMenu) {
+        qnToggle.addEventListener('click', () => {
+            const active = qnToggle.classList.toggle('active');
+            qnMenu.classList.toggle('active', active);
+        });
+        document.addEventListener('click', (e) => {
+            if (!qnToggle.contains(e.target) && !qnMenu.contains(e.target)) {
+                qnToggle.classList.remove('active');
+                qnMenu.classList.remove('active');
+            }
+        });
+    }
 
     /* ──────────────────────────────────────────────
        Fix 1 + Fix 10: BG ZOOM + PARALLAX — single JS loop
