@@ -15,7 +15,11 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           crossorigin="anonymous">
-
+    <link rel="preload"
+          as="image"
+          th:href="@{/images/profile/abir.webp}"
+          href="/images/profile/abir.webp"
+          type="image/webp">
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/animations.css}">
     <link rel="stylesheet" th:href="@{/css/hero.css}">
@@ -23,19 +27,21 @@
     <link th:if="${extraCss != null}" rel="stylesheet" th:href="${extraCss}">
 </head>
 <body>
-
+<div id="scrollProgress"></div>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <th:block th:replace="${content}"></th:block>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
-<script th:src="@{/js/title-rotator.js}"></script>
-<script th:src="@{/js/counter.js}"></script>
-<script th:src="@{/js/github-api.js}"></script>
-<script th:src="@{/js/hero-particles.js}"></script>
-<script th:src="@{/js/orbit.js}"></script>
-<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/title-rotator.js}" defer></script>
+<script th:src="@{/js/counter.js}" defer></script>
+<script th:src="@{/js/github-api.js}" defer></script>
+<script th:src="@{/js/hero-particles.js}" defer></script>
+<script th:src="@{/js/orbit.js}" defer></script>
+<script th:src="@{/js/script.js}" defer></script>
+<script th:src="@{/js/scramble.js}" defer></script>
+<script th:src="@{/js/cursor.js}" defer></script>
 
 <script th:if="${extraJs != null}" th:src="${extraJs}"></script>
 
