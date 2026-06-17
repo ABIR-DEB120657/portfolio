@@ -524,6 +524,12 @@
             0 0 100px 0px rgba(16, 185, 129, 0.07);
     flex-shrink: 0;
     pointer-events: auto;
+    background: linear-gradient(
+            135deg,
+            rgba(16,185,129,0.08) 0%,
+            rgba(16,185,129,0.03) 100%
+    );
+
 }
 
 .hero-photo {
@@ -1006,4 +1012,419 @@
 .orbit-photo-wrap img {
     object-fit: cover;
     border-radius: 50%;
+}
+/* ═══════════════════════════════════════
+   STEP 1 — DOT GRID BACKGROUND
+═══════════════════════════════════════ */
+#home,
+.hero-section {
+    background-image: radial-gradient(circle, rgba(16, 185, 129, 0.15) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+/* ═══════════════════════════════════════
+   STEP 1 — GRADIENT ORBS
+═══════════════════════════════════════ */
+.hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(90px);
+    z-index: 0;
+}
+.hero-orb-1 {
+    width: 500px;
+    height: 500px;
+    top: -8%;
+    right: 3%;
+    background: radial-gradient(circle,
+    rgba(59, 130, 246, 0.20) 0%,
+    rgba(168, 85, 247, 0.13) 55%,
+    transparent 75%
+    );
+    animation: orbFloat1 12s ease-in-out infinite;
+}
+.hero-orb-2 {
+    width: 400px;
+    height: 400px;
+    bottom: -5%;
+    left: 8%;
+    background: radial-gradient(circle,
+    rgba(16, 185, 129, 0.16) 0%,
+    rgba(6, 182, 212, 0.10) 55%,
+    transparent 75%
+    );
+    animation: orbFloat2 16s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+    0%, 100% { transform: translate(0, 0)      scale(1);    }
+    33%       { transform: translate(-18px, 22px) scale(1.05); }
+    66%       { transform: translate(14px, -16px) scale(0.96); }
+}
+@keyframes orbFloat2 {
+    0%, 100% { transform: translate(0, 0)      scale(1);    }
+    40%       { transform: translate(16px, -20px) scale(1.04); }
+    70%       { transform: translate(-10px, 12px) scale(0.97); }
+}
+
+/* ═══════════════════════════════════════
+   STEP 1 — Content columns z-index lift
+   (supplementary blocks — existing rules untouched)
+═══════════════════════════════════════ */
+.hero-left,
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+.hero-center {
+    z-index: 1;   /* position:relative already set in existing rule */
+}
+.hero-right {
+    position: relative;
+    z-index: 1;
+}
+/* ═══════════════════════════════════════
+   STEP 2 — SCROLL PROGRESS BAR
+═══════════════════════════════════════ */
+#scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, #10b981, #06b6d4, #a855f7);
+    z-index: 9999;
+    transition: width 0.08s linear;
+    pointer-events: none;
+    border-radius: 0 2px 2px 0;
+}
+
+/* ═══════════════════════════════════════
+   STEP 2 — SCROLL DOWN HINT
+═══════════════════════════════════════ */
+.hero-scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    opacity: 0;
+    animation: heroFadeUp 0.5s ease 1.1s forwards;
+    margin-top: 2px;
+}
+.hero-scroll-hint span {
+    font-size: 0.62rem;
+    color: var(--text-muted, #6e7681);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: 'Fira Code', monospace;
+}
+.hint-mouse {
+    width: 18px;
+    height: 28px;
+    border: 1.5px solid rgba(16, 185, 129, 0.35);
+    border-radius: 9px;
+    display: flex;
+    justify-content: center;
+    padding-top: 5px;
+    flex-shrink: 0;
+}
+.hint-mouse::after {
+    content: '';
+    width: 2px;
+    height: 5px;
+    background: var(--accent, #10b981);
+    border-radius: 2px;
+    animation: scrollDot 1.6s ease-in-out infinite;
+}
+/* ═══════════════════════════════════════
+   STEP 3 — STATS STRIP
+═══════════════════════════════════════ */
+.stats-strip {
+    width: 100%;
+    background: rgba(16, 185, 129, 0.04);
+    border-top: 1px solid rgba(16, 185, 129, 0.12);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.12);
+    padding: 28px 48px;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+.stats-strip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.04) 50%,
+    transparent 100%
+    );
+    pointer-events: none;
+}
+.stats-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    padding: 8px 16px;
+}
+.stat-number {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    font-family: 'Fira Code', monospace;
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    line-height: 1;
+}
+.stat-plus {
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    font-weight: 700;
+    color: var(--accent, #10b981);
+    line-height: 1;
+    display: inline;
+    margin-left: -4px;
+    vertical-align: top;
+    margin-top: 4px;
+}
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted, #6e7681);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 2px;
+}
+.stat-divider {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(
+            180deg,
+            transparent,
+            rgba(16, 185, 129, 0.25),
+            transparent
+    );
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .stats-strip { padding: 20px 16px; }
+    .stats-container {
+        display: grid;
+        grid-template-columns: 1fr 1px 1fr;
+        grid-template-rows: auto 1px auto;
+        gap: 0;
+    }
+    .stat-item:nth-child(1) { grid-column: 1; grid-row: 1; }
+    .stat-divider:nth-child(2) {
+        grid-column: 2; grid-row: 1;
+        width: 1px; height: 100%;
+    }
+    .stat-item:nth-child(3) { grid-column: 3; grid-row: 1; }
+    .stat-divider:nth-child(4) {
+        grid-column: 1 / span 3; grid-row: 2;
+        width: 100%; height: 1px;
+        background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(16, 185, 129, 0.25),
+                transparent
+        );
+        margin: 8px 0;
+    }
+    .stat-item:nth-child(5) { grid-column: 1; grid-row: 3; }
+    .stat-divider:nth-child(6) {
+        grid-column: 2; grid-row: 3;
+        width: 1px; height: 100%;
+    }
+    .stat-item:nth-child(7) { grid-column: 3; grid-row: 3; }
+}
+/* ═══════════════════════════════════════
+   STEP 6 — NAME GLITCH HOVER
+═══════════════════════════════════════ */
+.hero-name:hover {
+    animation:
+            nameGradientSweep 7s linear infinite,
+            nameGlitch 0.5s steps(2, end) infinite;
+}
+
+@keyframes nameGlitch {
+    0%   { transform: translate(0, 0); }
+    15%  { transform: translate(-3px, 1px);
+        filter: drop-shadow(3px 0 rgba(6,182,212,0.85))
+        drop-shadow(-3px 0 rgba(168,85,247,0.85)); }
+    30%  { transform: translate(3px, -1px); }
+    45%  { transform: translate(-2px, 2px);
+        filter: drop-shadow(-3px 0 rgba(6,182,212,0.85))
+        drop-shadow(3px 0 rgba(168,85,247,0.85)); }
+    60%  { transform: translate(2px, 0); }
+    75%  { transform: translate(-1px, -2px); }
+    100% { transform: translate(0, 0);
+        filter: drop-shadow(0 0 14px rgba(168,85,247,0.45))
+        drop-shadow(0 0 8px rgba(6,182,212,0.35)); }
+}
+/* ═══════════════════════════════════════
+   STEP 7 — HOLOGRAPHIC TRIPLE RING
+═══════════════════════════════════════ */
+.hero-holo-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 216px;
+    height: 216px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 7;
+    box-shadow:
+            0 0 0 2px  rgba(16, 185, 129, 0.70),
+            0 0 0 9px  rgba(6, 182, 212, 0.18),
+            0 0 0 16px rgba(168, 85, 247, 0.12),
+            0 0 28px 16px rgba(59, 130, 246, 0.07);
+    animation: holoRingPulse 2.5s ease-in-out infinite,
+    holoColorShift 5s linear infinite;
+}
+
+@keyframes holoRingPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.85; }
+    50%       { transform: translate(-50%, -50%) scale(1.04); opacity: 1;    }
+}
+
+@keyframes holoColorShift {
+    0%   { box-shadow: 0 0 0 2px rgba(16,185,129,0.70),  0 0 0 9px rgba(6,182,212,0.18),  0 0 0 16px rgba(168,85,247,0.12), 0 0 28px 16px rgba(59,130,246,0.07); }
+    25%  { box-shadow: 0 0 0 2px rgba(6,182,212,0.70),   0 0 0 9px rgba(168,85,247,0.18), 0 0 0 16px rgba(59,130,246,0.12), 0 0 28px 16px rgba(16,185,129,0.07); }
+    50%  { box-shadow: 0 0 0 2px rgba(168,85,247,0.70),  0 0 0 9px rgba(59,130,246,0.18), 0 0 0 16px rgba(16,185,129,0.12), 0 0 28px 16px rgba(6,182,212,0.07);  }
+    75%  { box-shadow: 0 0 0 2px rgba(59,130,246,0.70),  0 0 0 9px rgba(16,185,129,0.18), 0 0 0 16px rgba(6,182,212,0.12),  0 0 28px 16px rgba(168,85,247,0.07); }
+    100% { box-shadow: 0 0 0 2px rgba(16,185,129,0.70),  0 0 0 9px rgba(6,182,212,0.18),  0 0 0 16px rgba(168,85,247,0.12), 0 0 28px 16px rgba(59,130,246,0.07); }
+}
+
+@media (max-width: 1150px) {
+    .hero-holo-ring { width: 178px; height: 178px; }
+}
+@media (max-width: 768px) {
+    .hero-holo-ring { width: 148px; height: 148px; }
+}
+@media (max-width: 480px) {
+    .hero-holo-ring { width: 124px; height: 124px; }
+}
+/* ═══════════════════════════════════════
+   STEP 10 — INFINITE TECH MARQUEE
+═══════════════════════════════════════ */
+.hero-marquee-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: heroFadeUp 0.5s ease 0.80s forwards;
+    mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            black 12%,
+            black 88%,
+            transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            black 12%,
+            black 88%,
+            transparent 100%
+    );
+}
+
+.hero-marquee-track {
+    display: flex;
+    gap: 8px;
+    width: max-content;
+    animation: marqueeScroll 22s linear infinite;
+}
+
+.hero-marquee-wrap:hover .hero-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+    .hero-marquee-wrap {
+        mask-image: linear-gradient(
+                90deg,
+                transparent 0%,
+                black 8%,
+                black 92%,
+                transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+                90deg,
+                transparent 0%,
+                black 8%,
+                black 92%,
+                transparent 100%
+        );
+    }
+    .hero-marquee-track {
+        animation-duration: 16s;
+    }
+}
+/* ═══════════════════════════════════════
+   MARQUEE GRID FIX — photo column restore
+═══════════════════════════════════════ */
+.hero-left,
+.hero-content {
+    min-width: 0;
+}
+.hero-marquee-wrap {
+    max-width: 100%;
+}
+/* ═══════════════════════════════════════
+   PERFORMANCE — GPU layer promotion
+═══════════════════════════════════════ */
+.hero-orb-1,
+.hero-orb-2,
+.hero-glow,
+.hero-aura-ring,
+.hero-holo-ring,
+.hero-radar-sweep,
+.orbit-tag,
+.orbit-dot,
+.shock-ring,
+.burst-ring,
+.hero-marquee-track,
+.mag-cursor-dot,
+.mag-cursor-ring {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Orb blur cost কমাও */
+.hero-orb {
+    filter: blur(70px);
+    will-change: transform, opacity;
+}
+
+/* Box-shadow animation বন্ধ — repaint কমাবে */
+.hero-card:hover {
+    box-shadow: none;
+}
+
+/* backdrop-filter শুধু দরকারি জায়গায় */
+.hero-card {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
