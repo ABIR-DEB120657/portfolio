@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/base :: layout('Abir Deb | Portfolio', ~{::main}, ~{}, ~{})}">
+
 <body>
 <main>
 
@@ -41,7 +42,8 @@
          HERO SECTION — 2-Column Grid
          ═══════════════════════════════════════ -->
     <section id="home" class="hero-section">
-
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
         <!-- AMBIENT SPOTLIGHT — mouse-follow glow (Step 7) -->
         <div class="hero-spotlight" id="heroSpotlight"></div>
 
@@ -79,15 +81,34 @@
                         </a>
                     </div>
 
-                    <div class="hero-tags">
-                        <span class="hero-tag"><i class="fab fa-java"></i> Java</span>
-                        <span class="hero-tag"><i class="fas fa-leaf"></i> Spring Boot</span>
-                        <span class="hero-tag"><i class="fab fa-react"></i> React</span>
-                        <span class="hero-tag"><i class="fab fa-git-alt"></i> Git</span>
+                    <div class="hero-marquee-wrap">
+                        <div class="hero-marquee-track">
+                            <span class="hero-tag"><i class="fab fa-java"></i> Java</span>
+                            <span class="hero-tag"><i class="fas fa-leaf"></i> Spring Boot</span>
+                            <span class="hero-tag"><i class="fab fa-react"></i> React</span>
+                            <span class="hero-tag"><i class="fab fa-git-alt"></i> Git</span>
+                            <span class="hero-tag"><i class="fas fa-database"></i> MySQL</span>
+                            <span class="hero-tag"><i class="fab fa-docker"></i> Docker</span>
+                            <span class="hero-tag"><i class="fab fa-js"></i> JavaScript</span>
+                            <span class="hero-tag"><i class="fab fa-html5"></i> HTML5</span>
+                            <span class="hero-tag"><i class="fas fa-server"></i> REST API</span>
+                            <span class="hero-tag"><i class="fab fa-github"></i> GitHub</span>
+                            <!-- Duplicate for seamless loop -->
+                            <span class="hero-tag"><i class="fab fa-java"></i> Java</span>
+                            <span class="hero-tag"><i class="fas fa-leaf"></i> Spring Boot</span>
+                            <span class="hero-tag"><i class="fab fa-react"></i> React</span>
+                            <span class="hero-tag"><i class="fab fa-git-alt"></i> Git</span>
+                            <span class="hero-tag"><i class="fas fa-database"></i> MySQL</span>
+                            <span class="hero-tag"><i class="fab fa-docker"></i> Docker</span>
+                            <span class="hero-tag"><i class="fab fa-js"></i> JavaScript</span>
+                            <span class="hero-tag"><i class="fab fa-html5"></i> HTML5</span>
+                            <span class="hero-tag"><i class="fas fa-server"></i> REST API</span>
+                            <span class="hero-tag"><i class="fab fa-github"></i> GitHub</span>
+                        </div>
                     </div>
 
                     <div class="hero-socials">
-                        <a href="https://github.com/ABIR-DEB120657/OOPS-II-project"
+                        <a href="https://github.com/ABIR-DEB120657"
                            target="_blank" rel="noopener"
                            class="social-link" aria-label="GitHub">
                             <i class="fab fa-github"></i>
@@ -97,7 +118,7 @@
                            class="social-link" aria-label="LinkedIn">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="mailto:debabir82@gmail.com"
+                        <a href="mailto:debabir82@xample.com"
                            class="social-link" aria-label="Email">
                             <i class="far fa-envelope"></i>
                         </a>
@@ -106,6 +127,10 @@
                            class="social-link" aria-label="Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
+                    </div>
+                    <div class="hero-scroll-hint">
+                        <div class="hint-mouse"></div>
+                        <span>scroll down</span>
                     </div>
                 </div>
 
@@ -118,11 +143,22 @@
 
                         <div id="dot-field"></div>
                         <div class="hero-photo-circle">
-                            <img th:src="@{/images/profile/abir.jpg}"
-                                 src="/images/profile/abir.jpg"
-                                 alt="Abir Deb"
-                                 class="hero-photo"/>
+                            <picture>
+                                <source th:srcset="@{/images/profile/abir.webp}"
+                                        srcset="/images/profile/abir.webp"
+                                        type="image/webp">
+                                <img th:src="@{/images/profile/abir.jpg}"
+                                     src="/images/profile/abir.jpg"
+                                     alt="Abir Deb"
+                                     class="hero-photo"
+                                     loading="eager"
+                                     fetchpriority="high"
+                                     decoding="async"
+                                     width="200"
+                                     height="200"/>
+                            </picture>
                         </div>
+                        <div class="hero-holo-ring"></div>
                         <div id="orbit-tags-container"></div>
                     </div>
                 </div>
@@ -131,7 +167,36 @@
         </div>
 
     </section>
-
+    <!-- ═══════════════════════════════════════
+             STATS STRIP
+             ═══════════════════════════════════════ -->
+    <div class="stats-strip">
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number" data-target="15">0</span>
+                <span class="stat-plus">+</span>
+                <span class="stat-label">Projects Built</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="500">0</span>
+                <span class="stat-plus">+</span>
+                <span class="stat-label">GitHub Commits</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="10">0</span>
+                <span class="stat-plus">+</span>
+                <span class="stat-label">Technologies</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="1000">0</span>
+                <span class="stat-plus">+</span>
+                <span class="stat-label">Cups of Coffee</span>
+            </div>
+        </div>
+    </div>
 
     <!-- ═══════════════════════════════════════
          INLINE SCRIPTS
@@ -166,7 +231,7 @@
                 pbParts = [];
 
                 // ── RING CORE (440 particles) ──
-                for (var i = 0; i < 440; i++) {
+                for (var i = 0; i < 220; i++) {
                     pbParts.push({
                         t: 0, ang: Math.random() * Math.PI * 2, r: PHOTO_R,
                         spd: 48 + Math.random() * 58, da: (Math.random() - 0.5) * 2.2,
@@ -177,7 +242,7 @@
                 }
 
                 // ── SPIKES (140 particles) ──
-                for (var j = 0; j < 140; j++) {
+                for (var j = 0; j < 70; j++) {
                     pbParts.push({
                         t: 1, ang: Math.random() * Math.PI * 2, r: PHOTO_R,
                         spd: 125 + Math.random() * 140, da: (Math.random() - 0.5) * 0.55,
@@ -188,7 +253,7 @@
                 }
 
                 // ── WISPS (100 particles) ──
-                for (var k = 0; k < 100; k++) {
+                for (var k = 0; k < 50; k++) {
                     pbParts.push({
                         t: 2, ang: Math.random() * Math.PI * 2, r: PHOTO_R * 0.72,
                         spd: 14 + Math.random() * 34, da: (Math.random() - 0.5) * 3.8,
