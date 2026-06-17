@@ -169,3 +169,87 @@
     });
 
 })();
+/* ═══════════════════════════════════════
+   STEP 8 — CURSOR-REACTIVE PARTICLES
+═══════════════════════════════════════ */
+(function () {
+    var heroEl = document.getElementById('home');
+    if (!heroEl) return;
+
+    var canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:0;opacity:0.55;';
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var mouse = { x: -999, y: -999, active: false };
+    var particles = [];
+    var MAX = 30;
+
+    heroEl.addEventListener('mousemove', function (e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.active = true;
+
+        // Spawn particle on move
+        if (particles.length < MAX) {
+            for (var i = 0; i < 1; i++) {
+                particles.push({
+                    x: mouse.x + (Math.random() - 0.5) * 12,
+                    y: mouse.y + (Math.random() - 0.5) * 12,
+                    vx: (Math.random() - 0.5) * 1.2,
+                    vy: -0.4 - Math.random() * 1.0,
+                    size: 1.2 + Math.random() * 2.2,
+                    alpha: 0.55 + Math.random() * 0.35,
+                    life: 0,
+                    maxLife: 55 + Math.floor(Math.random() * 35),
+                    hue: Math.random() < 0.6 ? 160 : (Math.random() < 0.5 ? 190 : 270),
+                });
+            }
+        }
+    });
+
+    heroEl.addEventListener('mouseleave', function () {
+        mouse.active = false;
+    });
+
+    function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = particles.length - 1; i >= 0; i--) {
+            var p = particles[i];
+            p.life++;
+            p.x  += p.vx;
+            p.y  += p.vy;
+            p.vy -= 0.012;
+            p.vx *= 0.97;
+
+            var lr    = p.life / p.maxLife;
+            var alpha = p.alpha * (1 - lr);
+            var size  = p.size  * (1 - lr * 0.4);
+            if (alpha < 0.01 || p.life >= p.maxLife) {
+                particles.splice(i, 1);
+                continue;
+            }
+
+            var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 2.5);
+            grad.addColorStop(0,   'hsla(' + p.hue + ',90%,65%,' + alpha.toFixed(3) + ')');
+            grad.addColorStop(0.5, 'hsla(' + p.hue + ',80%,55%,' + (alpha * 0.5).toFixed(3) + ')');
+            grad.addColorStop(1,   'hsla(' + p.hue + ',70%,50%,0)');
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size * 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+        }
+
+        requestAnimationFrame(tick);
+    }
+    tick();
+})();
