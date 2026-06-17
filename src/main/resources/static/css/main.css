@@ -400,3 +400,78 @@ h1, h2, h3, h4, h5, h6 {
     .container { padding: 0 20px; }
     .btn { justify-content: center; }
 }
+/* ═══════════════════════════════════════
+   STEP 9 — MAGNETIC CURSOR STYLES
+═══════════════════════════════════════ */
+@media (pointer: fine) {
+    * { cursor: none !important; }
+
+    .mag-cursor-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 8px;
+        height: 8px;
+        background: var(--accent, #10b981);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 99999;
+        box-shadow: 0 0 10px rgba(16,185,129,0.80),
+        0 0 20px rgba(16,185,129,0.40);
+        transition: transform 0.08s ease, opacity 0.2s ease;
+        will-change: transform;
+    }
+
+    .mag-cursor-ring {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid rgba(16,185,129,0.55);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 99998;
+        transition:
+                width 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+                height 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+                border-color 0.25s ease,
+                background 0.25s ease,
+                border-radius 0.25s ease,
+                opacity 0.2s ease;
+        will-change: transform;
+        backdrop-filter: blur(0px);
+    }
+}
+
+@media (pointer: coarse) {
+    .mag-cursor-dot,
+    .mag-cursor-ring { display: none !important; }
+}
+/* ═══════════════════════════════════════
+   PERFORMANCE — Scroll & paint optimize
+═══════════════════════════════════════ */
+html {
+    scroll-behavior: auto; /* Lenis handle করবে, browser scroll বন্ধ */
+}
+
+#home,
+.hero-section {
+    contain: layout style;
+}
+
+.stats-strip {
+    contain: layout style paint;
+}
+
+/* Animation গুলো GPU তে রাখো */
+@keyframes orbFloat1 {
+    0%, 100% { transform: translate3d(0, 0, 0)       scale(1);    }
+    33%       { transform: translate3d(-18px, 22px, 0) scale(1.05); }
+    66%       { transform: translate3d(14px, -16px, 0) scale(0.96); }
+}
+@keyframes orbFloat2 {
+    0%, 100% { transform: translate3d(0, 0, 0)       scale(1);    }
+    40%       { transform: translate3d(16px, -20px, 0) scale(1.04); }
+    70%       { transform: translate3d(-10px, 12px, 0) scale(0.97); }
+}
