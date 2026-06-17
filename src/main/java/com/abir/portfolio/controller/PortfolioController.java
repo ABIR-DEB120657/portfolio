@@ -14,6 +14,11 @@ public class PortfolioController {
     private PortfolioData portfolioData;
 
     @GetMapping("/")
+    public String start() {
+        return "start";
+    }
+
+    @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("name", "Abir");
         model.addAttribute("title", "Java & Spring Boot Developer");
