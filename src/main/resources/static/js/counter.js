@@ -71,3 +71,53 @@
     });
 
 })();
+/* ═══════════════════════════════════════
+   STEP 4 — STATS COUNTER ANIMATION
+═══════════════════════════════════════ */
+function animateCounters() {
+    var statNumbers = document.querySelectorAll('.stat-number');
+    if (!statNumbers.length) return;
+
+    function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+    }
+
+    function animateSingle(el) {
+        var target   = parseInt(el.getAttribute('data-target'), 10);
+        var duration = 1800;
+        var startTs  = null;
+
+        function tick(ts) {
+            if (!startTs) startTs = ts;
+            var elapsed  = ts - startTs;
+            var progress = Math.min(elapsed / duration, 1);
+            var eased    = easeOutQuart(progress);
+            var current  = Math.floor(eased * target);
+            el.textContent = current.toLocaleString();
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                el.textContent = target.toLocaleString();
+            }
+        }
+        requestAnimationFrame(tick);
+    }
+
+    var statsStrip = document.querySelector('.stats-strip');
+    if (!statsStrip) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                statNumbers.forEach(function(el) {
+                    animateSingle(el);
+                });
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    observer.observe(statsStrip);
+}
+
+animateCounters();
