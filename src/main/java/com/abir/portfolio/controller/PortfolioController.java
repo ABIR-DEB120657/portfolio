@@ -14,7 +14,8 @@ public class PortfolioController {
     private PortfolioData portfolioData;
 
     @GetMapping("/")
-    public String start() {
+    public String start(Model model) {
+        model.addAttribute("currentPage", "cover");
         return "start";
     }
 
