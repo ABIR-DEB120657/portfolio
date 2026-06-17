@@ -3,7 +3,89 @@
 <body>
 
 <footer th:fragment="footer">
+
+    <style>
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto 32px;
+            gap: 16px;
+        }
+        .page-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: var(--bg-card, #1c2128);
+            border: 1px solid var(--border, rgba(255,255,255,0.08));
+            color: var(--text-secondary, #8b949e);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+        .page-nav-link:hover {
+            color: var(--accent, #10b981);
+            border-color: var(--accent-border, rgba(16,185,129,0.40));
+            background: var(--accent-dim, rgba(16,185,129,0.08));
+            transform: translateY(-2px);
+        }
+        .page-nav-link.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            cursor: default;
+        }
+        @media (max-width: 480px) {
+            .page-nav-link span { display: none; }
+            .page-nav-link { padding: 10px 14px; }
+        }
+    </style>
+
     <div class="container" style="padding-top: 40px; padding-bottom: 40px; text-align: center; position: relative; z-index: 1;">
+
+        <div class="page-nav">
+
+            <!-- COVER -->
+            <th:block th:if="${currentPage == 'cover'}">
+                <span class="page-nav-link disabled"><i class="fa-solid fa-arrow-left"></i> <span>Start</span></span>
+                <a th:href="@{/home}" href="/home" class="page-nav-link"><span>Home</span> <i class="fa-solid fa-arrow-right"></i></a>
+            </th:block>
+
+            <!-- HOME -->
+            <th:block th:if="${currentPage == 'home'}">
+                <a th:href="@{/}" href="/" class="page-nav-link"><i class="fa-solid fa-arrow-left"></i> <span>Cover</span></a>
+                <a th:href="@{/about}" href="/about" class="page-nav-link"><span>About</span> <i class="fa-solid fa-arrow-right"></i></a>
+            </th:block>
+
+            <!-- ABOUT -->
+            <th:block th:if="${currentPage == 'about'}">
+                <a th:href="@{/home}" href="/home" class="page-nav-link"><i class="fa-solid fa-arrow-left"></i> <span>Home</span></a>
+                <a th:href="@{/skills}" href="/skills" class="page-nav-link"><span>Skills</span> <i class="fa-solid fa-arrow-right"></i></a>
+            </th:block>
+
+            <!-- SKILLS -->
+            <th:block th:if="${currentPage == 'skills'}">
+                <a th:href="@{/about}" href="/about" class="page-nav-link"><i class="fa-solid fa-arrow-left"></i> <span>About</span></a>
+                <a th:href="@{/projects}" href="/projects" class="page-nav-link"><span>Projects</span> <i class="fa-solid fa-arrow-right"></i></a>
+            </th:block>
+
+            <!-- PROJECTS -->
+            <th:block th:if="${currentPage == 'projects'}">
+                <a th:href="@{/skills}" href="/skills" class="page-nav-link"><i class="fa-solid fa-arrow-left"></i> <span>Skills</span></a>
+                <a th:href="@{/contact}" href="/contact" class="page-nav-link"><span>Contact</span> <i class="fa-solid fa-arrow-right"></i></a>
+            </th:block>
+
+            <!-- CONTACT -->
+            <th:block th:if="${currentPage == 'contact'}">
+                <a th:href="@{/projects}" href="/projects" class="page-nav-link"><i class="fa-solid fa-arrow-left"></i> <span>Projects</span></a>
+                <span class="page-nav-link disabled"><span>The End</span> <i class="fa-solid fa-flag-checkered"></i></span>
+            </th:block>
+
+        </div>
 
         <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 20px;">
             <a href="https://github.com/" target="_blank"
