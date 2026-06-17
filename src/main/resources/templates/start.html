@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBSIDIAN — Abir Deb</title>
+
+    <!-- Fix 14: Open Graph / Social meta -->
+    <meta property="og:title"        content="OBSIDIAN — Abir Deb">
+    <meta property="og:description"  content="I don't build websites. I build experiences people remember.">
+    <meta property="og:image"        content="/images/profile/cover.jpg">
+    <meta property="og:type"         content="website">
+    <meta name="twitter:card"         content="summary_large_image">
+    <meta name="twitter:title"        content="OBSIDIAN — Abir Deb">
+    <meta name="twitter:description"  content="I don't build websites. I build experiences people remember.">
+    <meta name="twitter:image"        content="/images/profile/cover.jpg">
+
+    <!-- Fix 3: Preload cover image -->
+    <link rel="preload" as="image" href="/images/profile/cover.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           RESET
+        ============================================================ */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --obsidian: #0B0B0B;
+            --charcoal: #1A1A1A;
+            --ivory:    #F5F1EA;
+            --iv55:     rgba(245,241,234,.55);
+            --iv25:     rgba(245,241,234,.25);
+            --iv13:     rgba(245,241,234,.13);
+            --gold:     #D6B56E;
+            --gold40:   rgba(214,181,110,.4);
+        }
+
+        html { scroll-behavior: smooth; }
+        html, body { width:100%; background:var(--obsidian); color:var(--ivory); overflow-x:hidden; }
+
+        /* Fix 6: hide system cursor everywhere */
+        * { cursor: none !important; }
+        @media (hover:none) { * { cursor:auto !important; } }
+
+        /* ============================================================
+           Fix 6: CUSTOM CURSOR
+        ============================================================ */
+        #cursor-dot {
+            position:fixed; width:6px; height:6px; border-radius:50%;
+            background:var(--gold); pointer-events:none; z-index:999999;
+            transform:translate(-50%,-50%);
+            will-change:left,top;
+            transition:transform .15s ease, opacity .3s ease;
+        }
+        #cursor-ring {
+            position:fixed; width:34px; height:34px; border-radius:50%;
+            border:1px solid rgba(214,181,110,.55); pointer-events:none; z-index:999998;
+            transform:translate(-50%,-50%);
+            will-change:left,top;
+            transition:width .2s ease, height .2s ease, border-color .2s ease;
+        }
+        #cursor-dot.hov  { transform:translate(-50%,-50%) scale(2.5); }
+        #cursor-ring.hov { width:50px; height:50px; border-color:var(--gold); }
+        @media (hover:none) { #cursor-dot,#cursor-ring { display:none; } }
+
+        /* ============================================================
+           Fix 15: SCROLL PROGRESS BAR
+        ============================================================ */
+        #scroll-progress {
+            position:fixed; top:0; left:0; height:2px; width:0%;
+            background:linear-gradient(90deg, var(--gold), var(--gold40));
+            z-index:99997; pointer-events:none;
+            transition:width .08s linear;
+        }
+        .top-nav {
+            position:fixed; top:0; left:0; right:0; z-index:9000;
+            display:flex; align-items:center; justify-content:center;
+            gap:clamp(20px,4vw,48px);
+            padding:18px clamp(20px,5vw,50px);
+            background:rgba(11,11,11,.55);
+            backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+            border-bottom:1px solid var(--iv13);
+            opacity:0; pointer-events:none;
+            transition:opacity .8s ease;
+        }
+        .top-nav.show { opacity:1; pointer-events:all; }
+        .nav-link {
+            font-family:'Inter',sans-serif; font-size:clamp(8px,.85vw,10px);
+            letter-spacing:.35em; text-transform:uppercase; font-weight:300;
+            color:var(--iv55); text-decoration:none;
+            transition:color .3s ease;
+        }
+        .nav-link:hover, .nav-link.active { color:var(--gold); }
+        @media (max-width:768px) {
+            .top-nav { gap:clamp(12px,4vw,24px); padding:14px 16px; }
+            .nav-link { font-size:7px; letter-spacing:.25em; }
+        }
+
+        /* ============================================================
+           INTRO SCREEN
+        ============================================================ */
+        #intro {
+            position:fixed; inset:0; background:#000; z-index:9999;
+            pointer-events:none; will-change:opacity;
+            transition:opacity 1.1s cubic-bezier(.4,0,.2,1);
+        }
+        #intro.out { opacity:0; }
+
+        /* ============================================================
+           COVER
+        ============================================================ */
+        .cover {
+            position:relative; width:100%; height:100vh; min-height:100vh;
+            overflow:hidden; display:flex; flex-direction:column;
+            contain:layout paint;
+        }
+
+        /* Fix 3: gradient fallback behind image */
+        #coverBgFallback {
+            position:absolute; inset:0; z-index:0;
+            background:linear-gradient(135deg, #1c1c1c 0%, var(--obsidian) 100%);
+        }
+
+        /*
+          Fix 1: Portrait BG
+          ─ filter is STATIC (no transition) → zero repaint cost
+          ─ ONLY transform animates (JS loop handles zoom + parallax together)
+          ─ No CSS keyframe animation → no conflict with JS transforms
+        */
+        #coverBg {
+            position:absolute; inset:0; z-index:0;
+            background-color:var(--charcoal);
+            background-image:url('/images/profile/cover.jpg');
+            background-size:contain;
+            background-repeat:no-repeat;
+            background-position:center center;
+            filter:brightness(.88);
+            will-change:transform;
+            backface-visibility:hidden; -webkit-backface-visibility:hidden;
+            transform:scale(1.18) translate3d(0,0,0);
+        }
+
+        /*
+          Fix 1: REVEAL VEIL
+          Replaces the filter:blur animation.
+          Only opacity transitions → GPU compositor only, zero repaint.
+        */
+        #veil {
+            position:absolute; inset:0; z-index:1; background:#000;
+            will-change:opacity; transition:opacity 2.2s ease; pointer-events:none;
+        }
+        #veil.out { opacity:0; }
+
+        /* Static overlay stack */
+        .ov-grad {
+            position:absolute; inset:0; z-index:2; pointer-events:none;
+            background:linear-gradient(180deg,
+            rgba(11,11,11,.83) 0%, rgba(11,11,11,.33) 22%,
+            rgba(11,11,11,.13) 45%, rgba(11,11,11,.28) 65%,
+            rgba(11,11,11,.93) 100%);
+        }
+        .ov-vign {
+            position:absolute; inset:0; z-index:3; pointer-events:none;
+            background:radial-gradient(ellipse 78% 88% at 50% 46%,
+            transparent 28%, rgba(0,0,0,.72) 100%);
+        }
+
+        /* Fix 16: Light leak — cinematic gold glow at face */
+        .light-leak {
+            position:absolute; top:32%; left:54%;
+            transform:translate(-50%,-50%);
+            width:48%; height:52%; z-index:4; pointer-events:none;
+            background:radial-gradient(ellipse at center,
+            rgba(214,181,110,.04) 0%, rgba(214,181,110,.012) 45%, transparent 70%);
+        }
+
+        .ov-grain {
+            position:absolute; inset:0; z-index:5; opacity:.032; pointer-events:none;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+            background-size:200px 200px;
+        }
+
+        /* Fix 4: Ghost words — opacity raised from .022 → .05 */
+        .ghost-words { position:absolute; inset:0; z-index:6; pointer-events:none; overflow:hidden; }
+        .fw {
+            position:absolute; font-family:'Inter',sans-serif; font-weight:700;
+            letter-spacing:.18em; text-transform:uppercase;
+            color:rgba(245,241,234,.05); /* Fix 4 */
+            user-select:none; will-change:transform;
+            backface-visibility:hidden; -webkit-backface-visibility:hidden;
+        }
+        .fw-d { font-size:clamp(48px,7vw,110px);  top:18%; left:-2%; }
+        .fw-e { font-size:clamp(36px,5.5vw,90px); top:52%; right:-3%; }
+        .fw-c { font-size:clamp(42px,6vw,100px);  top:76%; left:15%; }
+
+        /* Fix 5: Name watermark — 0.12 stroke + 0.06 fill */
+        #nameWm {
+            position:absolute; bottom:54px; left:0; right:0;
+            text-align:center; z-index:7; pointer-events:none;
+            user-select:none; overflow:hidden;
+            opacity:0; will-change:opacity;
+        }
+        #nameWm.show { animation:fadeIn 1s ease forwards; }
+        .wm-t {
+            font-family:'Cormorant Garamond',serif; font-size:clamp(52px,17vw,220px);
+            font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+            color:rgba(245,241,234,.06);               /* Fix 5: fill */
+            -webkit-text-stroke:1px rgba(245,241,234,.12); /* Fix 5: stroke */
+            white-space:nowrap; display:block;
+        }
+
+        /* Rotating badge — Fix 17 text is in HTML */
+        #badge {
+            position:absolute; left:clamp(28px,5vw,58px);
+            top:52%; transform:translateY(-50%);
+            z-index:12; width:80px; height:80px;
+            opacity:0; will-change:opacity; pointer-events:none;
+        }
+        #badge.show { animation:fadeIn 1s ease forwards; }
+        .badge-rot {
+            animation:spin 22s linear infinite;
+            will-change:transform; backface-visibility:hidden;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* ============================================================
+           CONTENT GRID
+        ============================================================ */
+        .cover-content {
+            position:relative; z-index:10; width:100%; height:100%;
+            display:grid; grid-template-rows:auto auto 1fr auto;
+            padding:clamp(22px,4vh,44px) clamp(28px,6vw,60px);
+            pointer-events:none;
+        }
+
+        /* Shared reveal utility */
+        .rev {
+            opacity:0; will-change:transform,opacity;
+            backface-visibility:hidden; -webkit-backface-visibility:hidden;
+        }
+        .rev-up { transform:translate3d(0,22px,0); }
+        .rev-dn { transform:translate3d(0,-8px,0); }
+        .rev.in { animation:revUp .65s cubic-bezier(.22,.61,.36,1) forwards; }
+        .rev.rev-dn.in { animation:revDn .65s cubic-bezier(.22,.61,.36,1) forwards; }
+        @keyframes revUp { to { opacity:1; transform:translate3d(0,0,0); } }
+        @keyframes revDn { to { opacity:1; transform:translate3d(0,0,0); } }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes ltrReveal { to { opacity:1; transform:translate3d(0,0,0); } }
+
+        /* ─── ROW 1: Top bar ─── */
+        .top-bar {
+            display:flex; align-items:center; gap:16px; padding:7px 0;
+            border-top:1px solid var(--iv25); border-bottom:1px solid var(--iv25);
+        }
+        .t-lbl {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.85vw,10px);
+            letter-spacing:.38em; text-transform:uppercase;
+            font-weight:300; color:var(--ivory); white-space:nowrap;
+        }
+        .t-rule { flex:1; height:1px; background:var(--iv25); }
+
+        /* ─── ROW 2: Masthead ─── */
+        .masthead { text-align:center; padding-top:clamp(8px,2vh,20px); }
+
+        #obsTitle {
+            font-family:'Cormorant SC','Cormorant Garamond',serif;
+            font-size:clamp(56px,13.5vw,185px); font-weight:700;
+            letter-spacing:.14em; line-height:.88; color:var(--ivory);
+            display:flex; justify-content:center; overflow:hidden;
+        }
+        #obsTitle .L {
+            display:inline-block; opacity:0;
+            transform:translate3d(0,45px,0);
+            will-change:transform,opacity; backface-visibility:hidden;
+        }
+
+        .m-sub {
+            font-family:'Inter',sans-serif; font-size:clamp(8px,1vw,12px);
+            letter-spacing:.5em; text-transform:uppercase;
+            font-weight:200; color:var(--ivory); margin-top:clamp(8px,1.5vh,16px);
+        }
+        .m-name {
+            font-family:'Inter',sans-serif; font-size:clamp(9px,1.1vw,14px);
+            letter-spacing:.55em; text-transform:uppercase;
+            font-weight:400; color:var(--gold); margin-top:clamp(2px,.5vh,6px);
+        }
+
+        /* ─── ROW 3: Mid ─── */
+        .mid-section {
+            display:grid; grid-template-columns:1fr 1fr 1fr;
+            align-items:end; padding-bottom:clamp(60px,9vh,100px);
+        }
+
+        /* Left: Selected works — Fix 12: hover on list items */
+        .sel-works { pointer-events:all; } /* override parent pointer-events:none */
+        .sw-rule { width:24px; height:1px; background:var(--gold40); margin-bottom:12px; }
+        .sw-lbl {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.8vw,9px);
+            letter-spacing:.4em; text-transform:uppercase;
+            font-weight:500; color:var(--ivory); margin-bottom:14px;
+        }
+        .sw-list { list-style:none; }
+        .sw-list li {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.78vw,9px);
+            letter-spacing:.3em; text-transform:uppercase;
+            font-weight:300; color:var(--iv55); line-height:1;
+            margin-bottom:clamp(6px,1vh,10px);
+            display:inline-block; /* Fix 12: needed for translateX */
+            transition:color .3s ease, transform .3s ease; /* Fix 12 */
+        }
+        .sw-list li::before { content:'— '; color:var(--gold); }
+        /* Fix 12: hover effect */
+        .sw-list li:hover { color:var(--gold); transform:translateX(4px); }
+
+        /* Right column: Fix 7 — 3 individually staggered groups */
+        .right-col { text-align:right; }
+        .rc-year, .rc-quote, .rc-stmt { opacity:0; will-change:transform,opacity; }
+
+        .yr-tag {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.8vw,9px);
+            letter-spacing:.4em; text-transform:uppercase;
+            font-weight:500; color:var(--gold); margin-bottom:8px;
+        }
+        .yr-det {
+            font-family:'Inter',sans-serif; font-size:clamp(6px,.72vw,8px);
+            letter-spacing:.35em; text-transform:uppercase;
+            font-weight:200; color:var(--iv55); line-height:2.1;
+        }
+        .g-star {
+            display:block; color:var(--gold);
+            font-size:clamp(14px,1.6vw,20px); margin:clamp(8px,1.5vh,16px) 0;
+        }
+        .q-mark {
+            font-family:'Cormorant Garamond',serif; font-size:clamp(22px,2.5vw,36px);
+            color:var(--gold); line-height:.8; display:block; margin-bottom:6px;
+        }
+        .q-txt {
+            font-family:'Cormorant Garamond',serif; font-size:clamp(12px,1.45vw,19px);
+            font-style:italic; font-weight:400; color:var(--ivory);
+            line-height:1.65; min-height:4.2em;
+        }
+        /* Fix 8: Quote author attribution */
+        .q-author {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.78vw,9px);
+            letter-spacing:.3em; text-transform:uppercase;
+            font-weight:300; color:var(--gold);
+            margin-top:10px; display:block;
+        }
+        .q-rule {
+            width:34px; height:1px; background:var(--gold);
+            margin:clamp(8px,1.2vh,14px) 0 clamp(8px,1.2vh,14px) auto;
+        }
+        .stmt {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.78vw,9px);
+            letter-spacing:.35em; text-transform:uppercase;
+            font-weight:400; color:var(--ivory); line-height:2.2;
+        }
+        .stmt .hl { color:var(--gold); }
+
+        /* ─── ROW 4: Bottom bar ─── */
+        .bot-bar {
+            display:flex; align-items:center; gap:16px; padding-top:10px;
+            border-top:1px solid var(--iv13);
+        }
+        .bot-lbl {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.8vw,9px);
+            letter-spacing:.4em; text-transform:uppercase;
+            font-weight:300; color:var(--iv55); white-space:nowrap;
+        }
+        .bot-rule { flex:1; height:1px; background:var(--iv13); }
+        .scroll-cta {
+            display:flex; align-items:center; gap:10px;
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.8vw,9px);
+            letter-spacing:.4em; text-transform:uppercase;
+            font-weight:300; color:var(--iv55); white-space:nowrap;
+            pointer-events:all;
+        }
+        .scroll-box {
+            width:24px; height:24px;
+            border:1px solid rgba(245,241,234,.35);
+            display:flex; align-items:center; justify-content:center;
+            font-size:11px; will-change:transform,opacity;
+        }
+        /* Fix 9: pulse managed by JS (no long delay) */
+        .scroll-box.pulse { animation:scrollPulse 2.4s ease-in-out infinite; }
+        @keyframes scrollPulse {
+            0%,100% { transform:translate3d(0,0,0); opacity:.5; }
+            50%      { transform:translate3d(0,6px,0); opacity:1; }
+        }
+
+        /* ============================================================
+           Fix 2: PAGE SECTIONS
+        ============================================================ */
+        .page-section {
+            width:100%; min-height:100vh;
+            background:var(--obsidian);
+            display:flex; align-items:center; justify-content:center;
+            padding:clamp(60px,10vh,120px) clamp(28px,8vw,120px);
+            position:relative; overflow:hidden;
+        }
+        .page-section::before {
+            content:''; position:absolute; inset:0; pointer-events:none;
+            background:linear-gradient(180deg,
+            rgba(11,11,11,.45) 0%, transparent 12%,
+            transparent 88%, rgba(11,11,11,.45) 100%);
+        }
+        .sec-inner { max-width:920px; width:100%; position:relative; z-index:1; }
+
+        .sec-tag {
+            font-family:'Inter',sans-serif; font-size:clamp(8px,.9vw,11px);
+            letter-spacing:.45em; text-transform:uppercase;
+            font-weight:300; color:var(--gold);
+            margin-bottom:clamp(20px,4vh,40px); display:block;
+        }
+        .sec-heading {
+            font-family:'Cormorant SC',serif;
+            font-size:clamp(42px,7vw,100px);
+            font-weight:600; letter-spacing:.06em; line-height:.95;
+            color:var(--ivory); margin-bottom:clamp(24px,4vh,48px);
+        }
+        .sec-body {
+            font-family:'Inter',sans-serif; font-size:clamp(13px,1.1vw,17px);
+            font-weight:300; color:var(--iv55); line-height:1.9;
+            max-width:560px; margin-bottom:clamp(30px,5vh,56px);
+        }
+
+        /* About skills */
+        .skills-grid { display:flex; flex-wrap:wrap; gap:10px; }
+        .skill-chip {
+            font-family:'Inter',sans-serif; font-size:clamp(7px,.78vw,9px);
+            letter-spacing:.3em; text-transform:uppercase;
+            font-weight:300; color:var(--iv55);
+            padding:6px 16px; border:1px solid rgba(245,241,234,.15);
+            transition:color .3s ease, border-color .3s ease;
+        }
+        .skill-chip:hover { color:var(--gold); border-color:var(--gold40); }
+
+        /* Projects */
+        .projects-grid {
+            display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+            gap:clamp(16px,2vw,28px); width:100%;
+        }
+        .proj-card {
+            border:1px solid rgba(245,241,234,.1); padding:clamp(20px,3vw,36px);
+            position:relative; overflow:hidden;
+            transition:border-color .4s ease, transform .4s ease;
+            background:rgba(255,255,255,.01);
+        }
+        .proj-card::before {
+            content:''; position:absolute; inset:0; opacity:0;
+            background:linear-gradient(135deg, rgba(214,181,110,.05) 0%, transparent 60%);
+            transition:opacity .4s ease;
+        }
+        .proj-card:hover { border-color:var(--gold40); transform:translateY(-5px); }
+        .proj-card:hover::before { opacity:1; }
+        .proj-num {
+            font-family:'Inter',sans-serif; font-size:8px;
+            letter-spacing:.4em; text-transform:uppercase;
+            font-weight:300; color:var(--gold); margin-bottom:16px;
+        }
+        .proj-name {
+            font-family:'Cormorant SC',serif;
+            font-size:clamp(20px,2.2vw,30px); font-weight:600;
+            letter-spacing:.06em; color:var(--ivory);
+            margin-bottom:10px; line-height:1.1;
+        }
+        .proj-desc {
+            font-family:'Inter',sans-serif; font-size:clamp(10px,.9vw,13px);
+            font-weight:300; color:var(--iv55); line-height:1.7; margin-bottom:16px;
+        }
+        .proj-tech {
+            font-family:'Inter',sans-serif; font-size:7px;
+            letter-spacing:.35em; text-transform:uppercase;
+            font-weight:300; color:var(--gold40);
+        }
+
+        /* Contact */
+        #contact .sec-inner { text-align:center; }
+        .contact-heading {
+            font-family:'Cormorant Garamond',serif;
+            font-size:clamp(36px,6.5vw,88px); font-style:italic;
+            font-weight:300; color:var(--ivory); line-height:1.1;
+            margin-bottom:clamp(16px,3vh,30px);
+        }
+        .contact-sub {
+            font-family:'Inter',sans-serif; font-size:clamp(10px,.95vw,13px);
+            font-weight:300; color:var(--iv55); letter-spacing:.15em;
+            margin-bottom:clamp(32px,5vh,56px);
+        }
+        .contact-email {
+            display:inline-block; font-family:'Inter',sans-serif;
+            font-size:clamp(11px,1.1vw,15px); letter-spacing:.3em;
+            text-transform:uppercase; font-weight:300; color:var(--gold);
+            text-decoration:none; border-bottom:1px solid var(--gold40); padding-bottom:4px;
+            transition:color .3s ease, border-color .3s ease;
+        }
+        .contact-email:hover { color:var(--ivory); border-color:var(--iv25); }
+        .contact-divider { width:1px; height:40px; background:var(--iv13); margin:clamp(24px,4vh,40px) auto; }
+        .social-links { display:flex; align-items:center; justify-content:center; gap:clamp(20px,3vw,40px); }
+        .social-link {
+            font-family:'Inter',sans-serif; font-size:8px; letter-spacing:.4em;
+            text-transform:uppercase; font-weight:300; color:var(--iv55);
+            text-decoration:none; transition:color .3s ease;
+        }
+        .social-link:hover { color:var(--gold); }
+
+        /* ============================================================
+           RESPONSIVE — Fix 13
+        ============================================================ */
+        @media (max-width:768px) {
+            /* Fix 13: mobile mid-section */
+            .mid-section { grid-template-columns:1fr; padding-bottom:clamp(40px,6vh,80px); }
+            .sel-works { display:none; }   /* hide left col — portrait takes center */
+            .mid-center { display:none; }
+            .right-col { text-align:left; }
+            .q-rule { margin:12px 0; }
+            #badge { display:none; }
+            .wm-t  { font-size:clamp(38px,22vw,100px); }
+            .fw    { display:none; }
+            .projects-grid { grid-template-columns:1fr; }
+        }
+        @media (max-width:480px) {
+            #obsTitle { letter-spacing:.07em; }
+            .cover-content { padding:20px; }
+        }
+        @media (prefers-reduced-motion:reduce) {
+            *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fix 6: Custom cursor -->
+<div id="cursor-dot"  aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+
+<!-- Fix 15: Scroll progress bar -->
+<div id="scroll-progress" aria-hidden="true"></div>
+<nav class="top-nav" id="topNav">
+    <a class="nav-link" href="/home">Home</a>
+    <a class="nav-link" href="/about">About</a>
+    <a class="nav-link" href="/projects">Projects</a>
+    <a class="nav-link" href="/skills">Skills</a>
+    <a class="nav-link" href="/contact">Contact</a>
+</nav>
+
+<!-- Intro screen -->
+<div id="intro" aria-hidden="true"></div>
+
+<!-- ============================================================
+     COVER
+============================================================ -->
+<main class="cover" id="cover">
+
+    <!-- Fix 3: gradient fallback -->
+    <div id="coverBgFallback" aria-hidden="true"></div>
+
+    <!-- Fix 1: portrait — ONLY transform animates via JS (no CSS keyframe conflict) -->
+    <div id="coverBg" role="img" aria-label="Portrait of Abir Deb"></div>
+
+    <!-- Fix 1: reveal veil — opacity-only transition, replaces filter:blur -->
+    <div id="veil" aria-hidden="true"></div>
+
+    <!-- Static overlays -->
+    <div class="ov-grad"    aria-hidden="true"></div>
+    <div class="ov-vign"    aria-hidden="true"></div>
+    <!-- Fix 16: Light leak -->
+    <div class="light-leak" aria-hidden="true"></div>
+    <div class="ov-grain"   aria-hidden="true"></div>
+
+
+
+    <!-- Fix 5: Name watermark — 0.12 stroke, 0.06 fill -->
+    <div id="nameWm" aria-hidden="true">
+        <span class="wm-t">ABIR DEB</span>
+    </div>
+
+
+
+    <!-- ─── CONTENT GRID ─── -->
+    <div class="cover-content">
+
+        <!-- ROW 1: Top bar — Fix 11: dynamic year -->
+        <header class="top-bar rev rev-dn" id="topBar">
+            <span class="t-lbl">Digital Edition</span>
+            <div class="t-rule"></div>
+            <span class="t-lbl">Vol.01 / <span class="dyn-year"></span></span>
+        </header>
+
+        <!-- ROW 2: Masthead -->
+        <div class="masthead">
+            <h1 id="obsTitle" aria-label="OBSIDIAN">
+                <span class="L">O</span><span class="L">B</span><span class="L">S</span><span class="L">I</span><span class="L">D</span><span class="L">I</span><span class="L">A</span><span class="L">N</span>
+            </h1>
+            <p class="m-sub rev rev-up" id="mSub">The Portfolio of</p>
+            <p class="m-name rev rev-up" id="mName">Abir Deb</p>
+        </div>
+
+
+        <!-- ROW 3: Mid -->
+        <div class="mid-section">
+            <div class="mid-center"></div>
+        </div>
+
+        <!-- ROW 4: Bottom bar — Fix 11: dynamic year -->
+        <footer class="bot-bar rev rev-up" id="botBar">
+            <span class="bot-lbl">Portfolio <span class="dyn-year"></span></span>
+            <div class="bot-rule"></div>
+            <div class="scroll-cta" id="scrollCta" role="button" tabindex="0">
+                <span>Scroll To Explore</span>
+                <div class="scroll-box" id="scrollBox">↓</div>
+            </div>
+        </footer>
+
+    </div><!-- /cover-content -->
+</main>
+<!-- ============================================================
+     SCRIPT
+============================================================ -->
+<script>
+    'use strict';
+
+    /* ──────────────────────────────────────────────
+       Fix 11: DYNAMIC YEAR — set all .dyn-year spans
+    ────────────────────────────────────────────── */
+    const YEAR = new Date().getFullYear();
+    document.querySelectorAll('.dyn-year').forEach(el => { el.textContent = YEAR; });
+
+    /* ──────────────────────────────────────────────
+       Fix 15: SCROLL PROGRESS
+    ────────────────────────────────────────────── */
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+    }, { passive: true });
+
+    /* ──────────────────────────────────────────────
+       Fix 6: CUSTOM CURSOR
+    ────────────────────────────────────────────── */
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let dX = 0, dY = 0, rX = 0, rY = 0;
+
+    document.addEventListener('mousemove', e => {
+        dX = e.clientX; dY = e.clientY;
+        dot.style.left = dX + 'px';
+        dot.style.top  = dY + 'px';
+    }, { passive: true });
+
+    (function ringLoop() {
+        rX += (dX - rX) * 0.11;
+        rY += (dY - rY) * 0.11;
+        ring.style.left = rX + 'px';
+        ring.style.top  = rY + 'px';
+        requestAnimationFrame(ringLoop);
+    })();
+
+    /* Hover expand on clickable elements */
+    document.querySelectorAll('a,[role="button"],.sw-list li,.proj-card,.skill-chip')
+        .forEach(el => {
+            el.addEventListener('mouseenter', () => { dot.classList.add('hov'); ring.classList.add('hov'); });
+            el.addEventListener('mouseleave', () => { dot.classList.remove('hov'); ring.classList.remove('hov'); });
+        });
+
+    /* ──────────────────────────────────────────────
+       Fix 1 + Fix 10: BG ZOOM + PARALLAX — single JS loop
+       ─ No CSS keyframe animation on bg → ZERO transform conflict
+       ─ Single `bgEl` declaration (Fix 10: removed inner duplicate)
+       ─ Zoom is pure JS easing → parallax can run simultaneously
+    ────────────────────────────────────────────── */
+    const bgEl = document.getElementById('coverBg'); /* Fix 10: only declared here */
+    const fw   = [
+        document.getElementById('fw0'),
+        document.getElementById('fw1'),
+        document.getElementById('fw2'),
+    ];
+
+    const ZOOM_FROM     = 1.18;
+    const ZOOM_TO       = 1.00;
+    const ZOOM_DURATION = 25000; /* 25 seconds */
+    let   zoomStart     = null;
+    let   zoomDone      = false;
+    let   curScale      = ZOOM_FROM;
+
+    /* Parallax state */
+    let mx = 0, my = 0, px = 0, py = 0;
+
+    document.addEventListener('mousemove', e => {
+        mx = (e.clientX / window.innerWidth  - 0.5);
+        my = (e.clientY / window.innerHeight - 0.5);
+    }, { passive: true });
+
+    function bgLoop(ts) {
+        /* ── Zoom: ease-out cubic ── */
+        if (!zoomDone) {
+            if (!zoomStart) zoomStart = ts;
+            const t     = Math.min((ts - zoomStart) / ZOOM_DURATION, 1);
+            const eased = 1 - Math.pow(1 - t, 2.8);
+            curScale    = ZOOM_FROM + (ZOOM_TO - ZOOM_FROM) * eased;
+            if (t >= 1) zoomDone = true;
+        }
+
+        /* ── Parallax lerp ── */
+        px += (mx - px) * 0.055;
+        py += (my - py) * 0.055;
+
+        /* ── Combined transform (compositor-only, zero repaint) ── */
+        bgEl.style.transform = `scale(${curScale}) translate3d(${px*16}px,${py*11}px,0)`;
+
+        /* ── Ghost word parallax + subtle float ── */
+        const t_sec = ts * 0.001;
+        if (fw[0]) fw[0].style.transform = `translate3d(${px*0.35*22}px,${py*0.35*14 + Math.sin(t_sec*0.7)*8}px,0)`;
+        if (fw[1]) fw[1].style.transform = `translate3d(${-px*0.5*22}px,${py*0.5*14  + Math.sin(t_sec*0.55+1)*6}px,0)`;
+        if (fw[2]) fw[2].style.transform = `translate3d(${px*0.65*22}px,${py*0.65*14 + Math.sin(t_sec*0.8+2)*10}px,0)`;
+
+        requestAnimationFrame(bgLoop);
+    }
+
+    /* Pause when tab hidden → save battery */
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) requestAnimationFrame(bgLoop);
+    });
+
+    /* ──────────────────────────────────────────────
+       ANIMATION SEQUENCE
+    ────────────────────────────────────────────── */
+    const wait    = ms => new Promise(r => setTimeout(r, ms));
+    const revIn   = el => el && el.classList.add('in');
+    const fadeShow = el => el && el.classList.add('show');
+
+    function ltrReveal(stagger) {
+        return new Promise(resolve => {
+            const ls = document.querySelectorAll('#obsTitle .L');
+            ls.forEach((l, i) => {
+                setTimeout(() => {
+                    l.style.animation = 'ltrReveal .55s cubic-bezier(.22,.61,.36,1) forwards';
+                    if (i === ls.length - 1) setTimeout(resolve, 560);
+                }, i * stagger);
+            });
+        });
+    }
+
+    function typewriter(el, text, speed) {
+        let i = 0; el.textContent = '';
+        const tick = () => {
+            if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, speed); }
+        };
+        tick();
+    }
+
+    async function runSequence() {
+        /* Start bg loop immediately — bg is hidden behind veil anyway */
+        requestAnimationFrame(bgLoop);
+
+        /* Phase 1: black hold */
+        await wait(1500);
+
+        /* Phase 2: intro fades out */
+        document.getElementById('intro').classList.add('out');
+        await wait(1000);
+        document.getElementById('intro').style.display = 'none';
+
+        /* Phase 3: veil fades → portrait revealed (already zooming) */
+        document.getElementById('veil').classList.add('out');
+        await wait(600);
+
+        /* Phase 4: OBSIDIAN letter-by-letter */
+        await ltrReveal(72);
+
+        /* Phase 5: top bar */
+        revIn(document.getElementById('topBar'));
+        document.getElementById('topNav')?.classList.add('show');
+        await wait(180);
+
+        /* Phase 6: subtitle, name */
+        revIn(document.getElementById('mSub'));
+        await wait(140);
+        revIn(document.getElementById('mName'));
+        await wait(500);
+
+        /* Phase 7: left works */
+        revIn(document.getElementById('swBlock'));
+        await wait(120);
+        /* Phase 10: bottom, badge, watermark */
+        await wait(280);
+        revIn(document.getElementById('botBar'));
+        fadeShow(document.getElementById('badge'));
+        fadeShow(document.getElementById('nameWm'));
+
+        /* Fix 9: scroll pulse after 2s (not 6s) */
+        setTimeout(() => document.getElementById('scrollBox')?.classList.add('pulse'), 2000);
+    }
+
+    runSequence();
+
+    /* ──────────────────────────────────────────────
+       Fix 2: SCROLL CTA → scrolls to #about section
+    ────────────────────────────────────────────── */
+    const scrollCta = document.getElementById('scrollCta');
+    function scrollToAbout() {
+        window.location.href = '/about';
+    }
+    scrollCta?.addEventListener('click', scrollToAbout);
+    scrollCta?.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') scrollToAbout();
+    });
+</script>
+</body>
+</html>
