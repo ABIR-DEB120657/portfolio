@@ -478,6 +478,71 @@
             }
         }
 
+        /* ═══ FLOATING QUICK-NAV ═══ */
+        .quick-nav {
+            position: fixed;
+            bottom: 24px; right: 24px;
+            z-index: 9997;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .quick-nav-toggle {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: #10b981;
+            border: none;
+            color: #0d1117;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(16,185,129,0.40);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.25s var(--nav-ease), box-shadow 0.25s ease;
+        }
+        .quick-nav-toggle:hover  { transform: scale(1.08); box-shadow: 0 8px 30px rgba(16,185,129,0.55); }
+        .quick-nav-toggle.active { transform: rotate(225deg); }
+
+        .quick-nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(12px) scale(0.9);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s var(--nav-ease);
+        }
+        .quick-nav-menu.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .quick-nav-link {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: #1c2128;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #8b949e;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        .quick-nav-link:hover, .quick-nav-link.active {
+            color: #10b981;
+            border-color: rgba(16,185,129,0.40);
+            background: rgba(16,185,129,0.10);
+        }
+        [data-theme="light"] .quick-nav-link {
+            background: #ffffff;
+            border-color: rgba(0,0,0,0.10);
+            color: #57606a;
+        }
+        @media (max-width: 900px) {
+            .quick-nav { bottom: 18px; right: 18px; }
+        }
+
         @media (max-width: 480px) {
             .site-header .container { padding: 0 16px; }
         }
@@ -495,7 +560,7 @@
             <div class="navbar">
 
                 <!-- ══ BRAND / LOGO  < Abir /> ══ -->
-                <a th:href="@{/}" class="nav-brand" href="/">
+                <a th:href="@{/home}" class="nav-brand" href="/home">
                     <span class="logo-bracket">&lt;&nbsp;</span>
                     <span class="logo-name">Abir</span>
                     <span class="logo-bracket">&nbsp;/&gt;</span>
@@ -510,9 +575,12 @@
                         <span class="nav-indicator" id="nav-indicator"></span>
                         <ul class="nav-links" id="nav-links-list">
                             <li>
-                                <a th:href="@{/}"
+                                <a th:href="@{/}" href="/">Cover</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/home}"
                                    th:classappend="${currentPage == 'home'} ? 'active' : ''"
-                                   href="/">Home</a>
+                                   href="/home">Home</a>
                             </li>
                             <li>
                                 <a th:href="@{/about}"
@@ -572,6 +640,21 @@
             </div>
         </div>
     </header>
+
+    <!-- Floating Quick-Nav -->
+    <div class="quick-nav" id="quick-nav">
+        <div class="quick-nav-menu" id="quick-nav-menu">
+            <a th:href="@{/}" href="/" class="quick-nav-link" title="Cover"><i class="fa-solid fa-book-open"></i></a>
+            <a th:href="@{/home}" th:classappend="${currentPage == 'home'} ? 'active' : ''" href="/home" class="quick-nav-link" title="Home"><i class="fa-solid fa-house"></i></a>
+            <a th:href="@{/about}" th:classappend="${currentPage == 'about'} ? 'active' : ''" href="/about" class="quick-nav-link" title="About"><i class="fa-solid fa-user"></i></a>
+            <a th:href="@{/skills}" th:classappend="${currentPage == 'skills'} ? 'active' : ''" href="/skills" class="quick-nav-link" title="Skills"><i class="fa-solid fa-bolt"></i></a>
+            <a th:href="@{/projects}" th:classappend="${currentPage == 'projects'} ? 'active' : ''" href="/projects" class="quick-nav-link" title="Projects"><i class="fa-solid fa-diagram-project"></i></a>
+            <a th:href="@{/contact}" th:classappend="${currentPage == 'contact'} ? 'active' : ''" href="/contact" class="quick-nav-link" title="Contact"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <button class="quick-nav-toggle" id="quick-nav-toggle" aria-label="Quick navigation">
+            <i class="fa-solid fa-bars" id="quick-nav-icon"></i>
+        </button>
+    </div>
 
     <!-- ════════════════════════════════════════════
          NAVBAR SCRIPT — Scroll + Indicator + Mobile + Theme
@@ -717,6 +800,29 @@
                         hamburger.classList.remove('active');
                         navMenu.classList.remove('active');
                         hamburger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            /* ══════════════════════════════════════
+               5. QUICK-NAV FAB TOGGLE
+               ══════════════════════════════════════ */
+            var qnToggle = document.getElementById('quick-nav-toggle');
+            var qnMenu   = document.getElementById('quick-nav-menu');
+            var qnIcon   = document.getElementById('quick-nav-icon');
+
+            if (qnToggle && qnMenu) {
+                qnToggle.addEventListener('click', function () {
+                    var isActive = qnToggle.classList.toggle('active');
+                    qnMenu.classList.toggle('active', isActive);
+                    qnIcon.className = isActive ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!qnToggle.contains(e.target) && !qnMenu.contains(e.target)) {
+                        qnToggle.classList.remove('active');
+                        qnMenu.classList.remove('active');
+                        qnIcon.className = 'fa-solid fa-bars';
                     }
                 });
             }
