@@ -478,71 +478,162 @@
             }
         }
 
-        /* ═══ FLOATING QUICK-NAV ═══ */
-        .quick-nav {
-            position: fixed;
-            bottom: 24px; right: 24px;
-            z-index: 9997;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-        .quick-nav-toggle {
-            width: 52px; height: 52px;
-            border-radius: 50%;
-            background: #10b981;
-            border: none;
-            color: #0d1117;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 6px 24px rgba(16,185,129,0.40);
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.25s var(--nav-ease), box-shadow 0.25s ease;
-        }
-        .quick-nav-toggle:hover  { transform: scale(1.08); box-shadow: 0 8px 30px rgba(16,185,129,0.55); }
-        .quick-nav-toggle.active { transform: rotate(225deg); }
+        /* ═══ RADIAL QUICK-NAV ═══ */
+        @property --tA { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+        @property --curAngle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+        @property --curRadius { syntax: '<length>'; inherits: false; initial-value: 0px; }
+        @property --curScale { syntax: '<number>'; inherits: false; initial-value: 0; }
 
-        .quick-nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(12px) scale(0.9);
-            pointer-events: none;
-            transition: opacity 0.25s ease, transform 0.25s var(--nav-ease);
+        .radial-nav {
+            position: fixed;
+            bottom: 90px; right: 90px;
+            z-index: 9997;
+            width: 52px; height: 52px;
         }
-        .quick-nav-menu.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
+        .menu-toggle-input {
+            position: absolute;
+            opacity: 0; pointer-events: none;
         }
-        .quick-nav-link {
-            width: 42px; height: 42px;
+        .toggle-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 52px; height: 52px;
+            margin: -26px;
             border-radius: 50%;
-            background: #1c2128;
-            border: 1px solid rgba(255,255,255,0.08);
-            color: #8b949e;
+            background: radial-gradient(circle at 35% 30%, #34d399, #10b981 60%, #059669);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 0 18px rgba(16,185,129,0.55), 0 0 40px rgba(16,185,129,0.25);
+            transition: box-shadow .3s ease;
+            border: none;
+        }
+        .toggle-btn::before {
+            content: '';
+            position: absolute; inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(from var(--tA), #34d399, #10b981, transparent 60%, #34d399);
+            z-index: -1;
+            animation: rn-spin 4s linear infinite;
+        }
+        @keyframes rn-spin { to { --tA: 360deg; } }
+        @keyframes rn-btnSpin { to { rotate: 360deg; } }
+
+        .menu-toggle-input:checked ~ .toggle-btn {
+            animation: rn-btnSpin 9s linear infinite;
+            box-shadow: 0 0 26px rgba(16,185,129,0.85), 0 0 60px rgba(16,185,129,0.4);
+        }
+        .bar {
+            position: absolute;
+            background: #0d1117;
+            border-radius: 2px;
+            transition: transform .35s cubic-bezier(.65,0,.35,1);
+        }
+        .bar-v { width: 3px; height: 20px; }
+        .bar-h { width: 20px; height: 3px; }
+        .menu-toggle-input:checked ~ .toggle-btn .bar-v { transform: rotate(90deg); }
+        .menu-toggle-input:checked ~ .toggle-btn .bar-h { transform: rotate(180deg); }
+
+        .rn-orbit { position: absolute; inset: 0; }
+
+        .ray {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, var(--c), transparent);
+            transform-origin: 0 50%;
+            transform: rotate(var(--angle)) scaleX(0);
+            opacity: 0; pointer-events: none;
+        }
+        @keyframes rayFlash {
+            0%   { transform: rotate(var(--angle)) scaleX(0); opacity: 0; }
+            35%  { transform: rotate(var(--angle)) scaleX(1); opacity: .8; }
+            100% { transform: rotate(var(--angle)) scaleX(1); opacity: 0; }
+        }
+        .menu-toggle-input:checked ~ .rn-orbit .ray {
+            animation: rayFlash .6s cubic-bezier(.22,1,.36,1) forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        .orbit-item {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 42px; height: 42px;
+            margin: -21px;
             display: flex; align-items: center; justify-content: center;
             text-decoration: none;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+            --curAngle: 0deg; --curRadius: 0px; --curScale: 0;
+            transform: rotate(var(--curAngle)) translateX(var(--curRadius)) rotate(calc(-1 * var(--curAngle))) scale(var(--curScale));
+            opacity: var(--curScale);
+            transition:
+                    --curAngle .5s cubic-bezier(.22,1,.36,1),
+                    --curRadius .55s cubic-bezier(.34,1.56,.64,1),
+                    --curScale .45s cubic-bezier(.34,1.56,.64,1);
+            transition-delay: var(--d, 0s);
         }
-        .quick-nav-link:hover, .quick-nav-link.active {
-            color: #10b981;
-            border-color: rgba(16,185,129,0.40);
-            background: rgba(16,185,129,0.10);
+        .menu-toggle-input:checked ~ .rn-orbit .orbit-item {
+            --curAngle: var(--angle);
+            --curRadius: 75px;
+            --curScale: 1;
         }
-        [data-theme="light"] .quick-nav-link {
-            background: #ffffff;
-            border-color: rgba(0,0,0,0.10);
-            color: #57606a;
+        .diamond {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background:
+                    linear-gradient(#0b0f18, #0b0f18) padding-box,
+                    conic-gradient(var(--c), transparent 40%, var(--c)) border-box;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            transform: rotate(45deg);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--c) 50%, transparent);
+            transition: box-shadow .25s ease, transform .25s ease;
         }
-        @media (max-width: 900px) {
-            .quick-nav { bottom: 18px; right: 18px; }
+        [data-theme="light"] .diamond {
+            background:
+                    linear-gradient(#ffffff, #ffffff) padding-box,
+                    conic-gradient(var(--c), transparent 40%, var(--c)) border-box;
         }
+        @keyframes breathe {
+            0%,100% { box-shadow: 0 0 12px color-mix(in srgb, var(--c) 50%, transparent); }
+            50%      { box-shadow: 0 0 22px color-mix(in srgb, var(--c) 80%, transparent); }
+        }
+        .menu-toggle-input:checked ~ .rn-orbit .orbit-item .diamond {
+            animation: breathe 3s ease-in-out infinite;
+        }
+        .orbit-item:hover .diamond {
+            transform: rotate(45deg) scale(1.15);
+        }
+        .rn-icon {
+            width: 16px; height: 16px;
+            transform: rotate(-45deg);
+            stroke: var(--c); fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round; stroke-linejoin: round;
+        }
+        .rn-label {
+            position: absolute;
+            bottom: -18px; left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.55rem;
+            color: var(--c);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+        .orbit-item:hover .rn-label { opacity: 1; }
 
+        .ray:nth-of-type(1), .orbit-item:nth-child(1) { --d: .00s; }
+        .ray:nth-of-type(2), .orbit-item:nth-child(2) { --d: .04s; }
+        .ray:nth-of-type(3), .orbit-item:nth-child(3) { --d: .08s; }
+        .ray:nth-of-type(4), .orbit-item:nth-child(4) { --d: .12s; }
+        .ray:nth-of-type(5), .orbit-item:nth-child(5) { --d: .08s; }
+        .ray:nth-of-type(6), .orbit-item:nth-child(6) { --d: .04s; }
+
+        @media (max-width: 900px) {
+            .radial-nav { bottom: 18px; right: 18px; }
+        }
         @media (max-width: 480px) {
             .site-header .container { padding: 0 16px; }
         }
@@ -641,19 +732,46 @@
         </div>
     </header>
 
-    <!-- Floating Quick-Nav -->
-    <div class="quick-nav" id="quick-nav">
-        <div class="quick-nav-menu" id="quick-nav-menu">
-            <a th:href="@{/}" href="/" class="quick-nav-link" title="Cover"><i class="fa-solid fa-book-open"></i></a>
-            <a th:href="@{/home}" th:classappend="${currentPage == 'home'} ? 'active' : ''" href="/home" class="quick-nav-link" title="Home"><i class="fa-solid fa-house"></i></a>
-            <a th:href="@{/about}" th:classappend="${currentPage == 'about'} ? 'active' : ''" href="/about" class="quick-nav-link" title="About"><i class="fa-solid fa-user"></i></a>
-            <a th:href="@{/skills}" th:classappend="${currentPage == 'skills'} ? 'active' : ''" href="/skills" class="quick-nav-link" title="Skills"><i class="fa-solid fa-bolt"></i></a>
-            <a th:href="@{/projects}" th:classappend="${currentPage == 'projects'} ? 'active' : ''" href="/projects" class="quick-nav-link" title="Projects"><i class="fa-solid fa-diagram-project"></i></a>
-            <a th:href="@{/contact}" th:classappend="${currentPage == 'contact'} ? 'active' : ''" href="/contact" class="quick-nav-link" title="Contact"><i class="fa-solid fa-envelope"></i></a>
-        </div>
-        <button class="quick-nav-toggle" id="quick-nav-toggle" aria-label="Quick navigation">
-            <i class="fa-solid fa-bars" id="quick-nav-icon"></i>
-        </button>
+    <!-- Radial Quick-Nav -->
+    <div class="radial-nav">
+        <input type="checkbox" id="menuToggle" class="menu-toggle-input">
+        <nav class="rn-orbit">
+            <span class="ray" style="--angle:0deg;   --c:#10b981;"></span>
+            <span class="ray" style="--angle:60deg;  --c:#22d3ee;"></span>
+            <span class="ray" style="--angle:120deg; --c:#a855f7;"></span>
+            <span class="ray" style="--angle:180deg; --c:#fb923c;"></span>
+            <span class="ray" style="--angle:240deg; --c:#f43f5e;"></span>
+            <span class="ray" style="--angle:300deg; --c:#ffd600;"></span>
+
+            <a th:href="@{/}" href="/" class="orbit-item" style="--angle:0deg; --c:#10b981;">
+                <span class="diamond"><svg class="rn-icon" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
+                <span class="rn-label">Cover</span>
+            </a>
+            <a th:href="@{/home}" href="/home" class="orbit-item" style="--angle:60deg; --c:#22d3ee;">
+                <span class="diamond"><svg class="rn-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+                <span class="rn-label">Home</span>
+            </a>
+            <a th:href="@{/about}" href="/about" class="orbit-item" style="--angle:120deg; --c:#a855f7;">
+                <span class="diamond"><svg class="rn-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>
+                <span class="rn-label">About</span>
+            </a>
+            <a th:href="@{/skills}" href="/skills" class="orbit-item" style="--angle:180deg; --c:#fb923c;">
+                <span class="diamond"><svg class="rn-icon" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+                <span class="rn-label">Skills</span>
+            </a>
+            <a th:href="@{/projects}" href="/projects" class="orbit-item" style="--angle:240deg; --c:#f43f5e;">
+                <span class="diamond"><svg class="rn-icon" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></span>
+                <span class="rn-label">Projects</span>
+            </a>
+            <a th:href="@{/contact}" href="/contact" class="orbit-item" style="--angle:300deg; --c:#ffd600;">
+                <span class="diamond"><svg class="rn-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+                <span class="rn-label">Contact</span>
+            </a>
+        </nav>
+        <label for="menuToggle" class="toggle-btn" aria-label="Toggle menu">
+            <span class="bar bar-v"></span>
+            <span class="bar bar-h"></span>
+        </label>
     </div>
 
     <!-- ════════════════════════════════════════════
@@ -804,28 +922,6 @@
                 });
             }
 
-            /* ══════════════════════════════════════
-               5. QUICK-NAV FAB TOGGLE
-               ══════════════════════════════════════ */
-            var qnToggle = document.getElementById('quick-nav-toggle');
-            var qnMenu   = document.getElementById('quick-nav-menu');
-            var qnIcon   = document.getElementById('quick-nav-icon');
-
-            if (qnToggle && qnMenu) {
-                qnToggle.addEventListener('click', function () {
-                    var isActive = qnToggle.classList.toggle('active');
-                    qnMenu.classList.toggle('active', isActive);
-                    qnIcon.className = isActive ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
-                });
-
-                document.addEventListener('click', function (e) {
-                    if (!qnToggle.contains(e.target) && !qnMenu.contains(e.target)) {
-                        qnToggle.classList.remove('active');
-                        qnMenu.classList.remove('active');
-                        qnIcon.className = 'fa-solid fa-bars';
-                    }
-                });
-            }
 
         })();
     </script>
