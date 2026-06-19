@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/base :: layout(
           'Skills | Abir Deb',
           ~{::main},
@@ -12,312 +10,263 @@
 <title>Skills | Abir Deb</title>
 
 <main>
-    <div class="s-bg">
 
-        <section class="s-hero">
-            <div class="s-hero-inner">
-                <span class="s-hero-badge">04 // skills</span>
-                <h1 class="s-hero-h">My <span class="s-accent-word">Skills</span></h1>
-                <p class="s-hero-sub">
-                    Technologies I work with — <span class="s-accent-word">built</span> from real projects.
-                </p>
-            </div>
-        </section>
-
-        <section class="s-arena-wrap" id="s-arena">
-            <div class="s-arena-grid">
-
-                <div class="s-sidebar" id="sSidebar">
-                    <div class="s-ctr">
-                        <span class="s-ctr-num" id="sCtrNum">01</span>
-                        <span class="s-ctr-sep">/</span>
-                        <span class="s-ctr-tot">04</span>
-                        <span class="s-ctr-lbl">SKILL</span>
-                    </div>
-                    <div class="s-rail">
-                        <div class="s-rail-node active" data-step="1">
-                            <div class="s-dot" data-step="1">
-                                01
-                                <span class="s-rail-pulse"></span>
-                            </div>
-                            <div class="s-rail-meta">
-                                <span class="s-rail-num">01</span>
-                                <span class="s-rail-lbl">BACKEND</span>
-                            </div>
-                        </div>
-                        <div class="s-rail-gap">
-                            <span class="s-rail-dash"></span>
-                            <span class="s-rail-dash"></span>
-                            <span class="s-rail-dash"></span>
-                        </div>
-                        <div class="s-rail-node" data-step="2">
-                            <div class="s-dot" data-step="2">02</div>
-                            <div class="s-rail-meta">
-                                <span class="s-rail-num">02</span>
-                                <span class="s-rail-lbl">FRONTEND</span>
-                            </div>
-                        </div>
-                        <div class="s-rail-gap">
-                            <span class="s-rail-dash"></span>
-                            <span class="s-rail-dash"></span>
-                            <span class="s-rail-dash"></span>
-                        </div>
-                        <div class="s-rail-node" data-step="3">
-                            <div class="s-dot" data-step="3">03</div>
-                            <div class="s-rail-meta">
-                                <span class="s-rail-num">03</span>
-                                <span class="s-rail-lbl">DATABASE</span>
-                            </div>
-                        </div>
-                        <div class="s-rail-gap">
-                            <span class="s-rail-dash"></span>
-                            <span class="s-rail-dash"></span>
-                            <span class="s-rail-dash"></span>
-                        </div>
-                        <div class="s-rail-node" data-step="4">
-                            <div class="s-dot" data-step="4">04</div>
-                            <div class="s-rail-meta">
-                                <span class="s-rail-num">04</span>
-                                <span class="s-rail-lbl">TOOLS</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="s-stack" id="sStack">
-
-                    <!-- CARD 1: BACKEND -->
-                    <div class="s-card" data-depth="0" data-card="1" data-idx="0" data-theme="backend">
-                        <div class="s-card-hdr">
-                            <span class="s-card-num">01 <span class="s-card-sep">//</span> 04</span>
-                            <span class="s-card-type">BACKEND</span>
-                            <span class="s-active-badge">
-                                <span class="s-active-dot"></span>
-                                ACTIVE
-                            </span>
-                        </div>
-
-                        <div class="s-title-row">
-                            <span class="s-ico"><i class="fas fa-server"></i></span>
-                            <div class="s-title-wrap">
-                                <h2 class="s-title">Backend <span>Development</span></h2>
-                                <p class="s-subtitle">Server-side APIs &amp; services</p>
-                                <span class="s-title-line"></span>
-                            </div>
-                        </div>
-
-                        <ul class="s-skills">
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Java &amp; OOP</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Spring Boot</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Spring MVC</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>REST API Design</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>JPA / Hibernate</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Maven Build</li>
-                        </ul>
-
-                        <div class="s-tags">
-                            <span class="s-tag-chip">JAVA</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">SPRING</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">REST</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">JPA</span>
-                        </div>
-
-                        <span class="s-peek-icon"><i class="fas fa-server"></i></span>
-                    </div>
-
-                    <!-- CARD 2: FRONTEND -->
-                    <div class="s-card" data-depth="1" data-card="2" data-idx="1" data-theme="frontend">
-                        <div class="s-card-hdr">
-                            <span class="s-card-num">02 <span class="s-card-sep">//</span> 04</span>
-                            <span class="s-card-type">FRONTEND</span>
-                        </div>
-
-                        <div class="s-title-row">
-                            <span class="s-ico"><i class="fas fa-code"></i></span>
-                            <div class="s-title-wrap">
-                                <h2 class="s-title">Frontend <span>Development</span></h2>
-                                <p class="s-subtitle">Interactive &amp; responsive UI</p>
-                                <span class="s-title-line"></span>
-                            </div>
-                        </div>
-
-                        <ul class="s-skills">
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>HTML5</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>CSS3 &amp; Animations</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>JavaScript (ES6+)</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Thymeleaf</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Bootstrap</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Responsive Design</li>
-                        </ul>
-
-                        <div class="s-tags">
-                            <span class="s-tag-chip">HTML</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">CSS</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">JS</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">BOOTSTRAP</span>
-                        </div>
-
-                        <span class="s-peek-icon"><i class="fas fa-code"></i></span>
-                    </div>
-
-                    <!-- CARD 3: DATABASE -->
-                    <div class="s-card" data-depth="2" data-card="3" data-idx="2" data-theme="database">
-                        <div class="s-card-hdr">
-                            <span class="s-card-num">03 <span class="s-card-sep">//</span> 04</span>
-                            <span class="s-card-type">DATABASE</span>
-                        </div>
-
-                        <div class="s-title-row">
-                            <span class="s-ico"><i class="fas fa-database"></i></span>
-                            <div class="s-title-wrap">
-                                <h2 class="s-title">Database <span>Management</span></h2>
-                                <p class="s-subtitle">Data storage &amp; querying</p>
-                                <span class="s-title-line"></span>
-                            </div>
-                        </div>
-
-                        <ul class="s-skills">
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>MySQL</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>PostgreSQL</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>MongoDB</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Redis</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>SQL Query Design</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Schema Modeling</li>
-                        </ul>
-
-                        <div class="s-tags">
-                            <span class="s-tag-chip">MYSQL</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">POSTGRES</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">MONGO</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">REDIS</span>
-                        </div>
-
-                        <span class="s-peek-icon"><i class="fas fa-database"></i></span>
-                    </div>
-
-                    <!-- CARD 4: TOOLS -->
-                    <div class="s-card" data-depth="3" data-card="4" data-idx="3" data-theme="tools">
-                        <div class="s-card-hdr">
-                            <span class="s-card-num">04 <span class="s-card-sep">//</span> 04</span>
-                            <span class="s-card-type">TOOLS</span>
-                        </div>
-
-                        <div class="s-title-row">
-                            <span class="s-ico"><i class="fas fa-tools"></i></span>
-                            <div class="s-title-wrap">
-                                <h2 class="s-title">Dev <span>Tools</span></h2>
-                                <p class="s-subtitle">Workflow &amp; productivity stack</p>
-                                <span class="s-title-line"></span>
-                            </div>
-                        </div>
-
-                        <ul class="s-skills">
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Git &amp; GitHub</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Docker</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>IntelliJ IDEA</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Postman</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>Linux CLI</li>
-                            <li class="s-skill-item"><span class="s-dot-bullet"></span>VS Code</li>
-                        </ul>
-
-                        <div class="s-tags">
-                            <span class="s-tag-chip">GIT</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">DOCKER</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">LINUX</span>
-                            <span class="s-tag-sep">•</span>
-                            <span class="s-tag-chip">POSTMAN</span>
-                        </div>
-
-                        <span class="s-peek-icon"><i class="fas fa-tools"></i></span>
-                    </div>
-
-                </div>
-
-                <!-- ── STEP 15: Right Nav (replaced) ── -->
-                <div class="s-nav" id="sNav">
-                    <button class="s-nb" id="sBtnPrev" disabled aria-label="Previous">
-                        <i class="fas fa-chevron-up"></i>
-                    </button>
-
-                    <div class="s-nav-hint">
-                        <span class="s-nav-hint-line"></span>
-                        <span class="s-nav-hint-txt">drag or click</span>
-                        <span class="s-nav-hint-line"></span>
-                    </div>
-
-                    <button class="s-nb" id="sBtnNext" aria-label="Next">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-
-                    <div class="s-nav-drag-label">
-                        <span class="s-nav-drag-arrow">⤵</span>
-                        <span class="s-nav-drag-txt">Drag card to focus &amp; explore</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- ── STEP 16: Drop Zone ── -->
-            <div class="s-drop-zone" id="sDropZone">
-                <svg class="s-drop-rings" viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse class="s-ring s-ring-1" cx="130" cy="80" rx="120" ry="68" fill="none" stroke-width="1.2"/>
-                    <ellipse class="s-ring s-ring-2" cx="130" cy="80" rx="88"  ry="48" fill="none" stroke-width="1.0"/>
-                    <ellipse class="s-ring s-ring-3" cx="130" cy="80" rx="54"  ry="28" fill="none" stroke-width="0.8"/>
-                    <g class="s-crosshair">
-                        <line x1="130" y1="62" x2="130" y2="98" stroke-width="1.5" stroke-linecap="round"/>
-                        <line x1="112" y1="80" x2="148" y2="80" stroke-width="1.5" stroke-linecap="round"/>
-                        <circle cx="130" cy="80" r="7" fill="none" stroke-width="1.8"/>
-                    </g>
-                </svg>
-                <div class="s-drop-labels">
-                    <span class="s-drop-main">DROP TO FOCUS</span>
-                    <span class="s-drop-sub">See skill in detail</span>
-                </div>
-            </div>
-
-            <div class="s-tip-box">
-                <span class="s-tip-icon">💡</span>
-                <span class="s-tip-text">Tip: Drag cards to explore skills in detail ✨</span>
-            </div>
-
-            <!-- ── STEP 17: Bottom CTA + Socials ── -->
-            <div class="s-bottom-bar">
-                <div class="s-socials">
-                    <a href="https://github.com/yourusername"      class="s-soc-btn s-soc-gh" target="_blank" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://linkedin.com/in/yourusername" class="s-soc-btn s-soc-li" target="_blank" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="mailto:youremail@gmail.com"           class="s-soc-btn s-soc-em" aria-label="Email">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://instagram.com/yourusername"   class="s-soc-btn s-soc-ig" target="_blank" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-
-                <div class="s-cta">
-                    <p class="s-cta-txt">Want to build something <span class="s-cta-accent">awesome</span> together?</p>
-                    <a href="/contact" class="s-cta-btn">
-                        Let's Work <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-
-        </section>
+    <!-- ═══ Ambient Overlays ═══ -->
+    <div class="scanlines"></div>
+    <div class="grid-pulse"></div>
+    <div class="glitch-overlay" id="glitchOverlay">
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
     </div>
+    <div class="corner-deco tl"></div>
+    <div class="corner-deco tr"></div>
+    <div class="corner-deco bl"></div>
+    <div class="corner-deco br"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- ═══ Skills Section ═══ -->
+    <section class="skills-section">
+
+        <!-- Radial depth fog — softens carousel edges -->
+        <div class="depth-fog"></div>
+
+        <!-- Hero header -->
+        <div class="section-eyebrow">04 // SKILLS</div>
+        <h1 class="section-title">MY SKILLS</h1>
+        <p class="section-sub">
+            Technologies I work with — <em>built</em> from real projects.
+        </p>
+
+        <!-- Steps 3–6 content goes here -->
+        <!-- Tube Light -->
+        <div class="tube-light-wrap" id="tubeLight">
+            <div class="tube-fixture">
+                <div class="tube-cap"></div>
+                <div class="tube-bar"></div>
+                <div class="tube-cap"></div>
+            </div>
+            <div class="tube-cone"></div>
+        </div>
+
+        <!-- Floor Reflection -->
+        <div class="floor-reflection"></div>
+        <!-- Carousel -->
+        <div class="carousel-scene">
+            <div class="carousel" id="carousel">
+
+                <!-- CARD 1: BACKEND -->
+                <div class="skill-card" data-index="0">
+                    <div class="skill-card-inner">
+                        <div class="card-sheen"></div>
+                        <div class="card-index">01 // 04 &nbsp;&nbsp; BACKEND <span class="status-dot"></span></div>
+                        <div class="card-icon-wrap"><i class="fas fa-server"></i></div>
+                        <div class="card-title">Backend <em>Development</em></div>
+                        <div class="card-sub">Server-side APIs &amp; services</div>
+                        <div class="card-divider"></div>
+                        <div class="skills-grid">
+                            <div class="skill-item" data-level="92"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Java &amp; OOP">Java &amp; OOP</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="88"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Spring Boot">Spring Boot</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="85"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Spring MVC">Spring MVC</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="90"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="REST API Design">REST API Design</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="82"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="JPA / Hibernate">JPA / Hibernate</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="78"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Maven Build">Maven Build</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                        </div>
+                        <div class="tags-row">
+                            <span class="tag">JAVA</span>
+                            <span class="tag">SPRING</span>
+                            <span class="tag">REST</span>
+                            <span class="tag">JPA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards 2, 3, 4 আসবে Step 5 & 6 এ -->
+                <!-- CARD 2: FRONTEND -->
+                <div class="skill-card" data-index="1">
+                    <div class="skill-card-inner">
+                        <div class="card-sheen"></div>
+                        <div class="card-index">02 // 04 &nbsp;&nbsp; FRONTEND <span class="status-dot" style="background:var(--purple)"></span></div>
+                        <div class="card-icon-wrap"><i class="fas fa-code"></i></div>
+                        <div class="card-title">Frontend <em>Development</em></div>
+                        <div class="card-sub">Responsive UI &amp; interactions</div>
+                        <div class="card-divider"></div>
+                        <div class="skills-grid">
+                            <div class="skill-item" data-level="90"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="HTML5">HTML5</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="88"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="CSS3 &amp; Animations">CSS3 &amp; Animations</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="85"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="JavaScript (ES6+)">JavaScript (ES6+)</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="80"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Thymeleaf">Thymeleaf</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="82"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Bootstrap">Bootstrap</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="86"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Responsive Design">Responsive Design</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                        </div>
+                        <div class="tags-row">
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">JS</span>
+                            <span class="tag">BOOTSTRAP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: DATABASE -->
+                <div class="skill-card" data-index="2">
+                    <div class="skill-card-inner">
+                        <div class="card-sheen"></div>
+                        <div class="card-index">03 // 04 &nbsp;&nbsp; DATABASE <span class="status-dot" style="background:#ffd600"></span></div>
+                        <div class="card-icon-wrap"><i class="fas fa-database"></i></div>
+                        <div class="card-title">Database <em>Management</em></div>
+                        <div class="card-sub">Data storage &amp; query design</div>
+                        <div class="card-divider"></div>
+                        <div class="skills-grid">
+                            <div class="skill-item" data-level="90"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="MySQL">MySQL</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="85"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="PostgreSQL">PostgreSQL</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="82"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="MongoDB">MongoDB</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="75"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Redis">Redis</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="80"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="SQL Query Design">SQL Query Design</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="83"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Schema Modeling">Schema Modeling</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                        </div>
+                        <div class="tags-row">
+                            <span class="tag">MYSQL</span>
+                            <span class="tag">POSTGRES</span>
+                            <span class="tag">MONGO</span>
+                            <span class="tag">REDIS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 4: TOOLS -->
+                <div class="skill-card" data-index="3">
+                    <div class="skill-card-inner">
+                        <div class="card-sheen"></div>
+                        <div class="card-index">04 // 04 &nbsp;&nbsp; TOOLS <span class="status-dot" style="background:#00e676"></span></div>
+                        <div class="card-icon-wrap"><i class="fas fa-tools"></i></div>
+                        <div class="card-title">Dev <em>Tools</em></div>
+                        <div class="card-sub">Workflow &amp; productivity stack</div>
+                        <div class="card-divider"></div>
+                        <div class="skills-grid">
+                            <div class="skill-item" data-level="95"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Git &amp; GitHub">Git &amp; GitHub</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="80"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Docker">Docker</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="88"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="IntelliJ IDEA">IntelliJ IDEA</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="90"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Postman">Postman</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="85"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="Linux CLI">Linux CLI</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                            <div class="skill-item" data-level="96"><!-- EDIT ME -->
+                                <div class="skill-item-row"><span class="skill-text" data-original="VS Code">VS Code</span></div>
+                                <div class="skill-bar"><div class="skill-bar-fill"></div></div>
+                            </div>
+                        </div>
+                        <div class="tags-row">
+                            <span class="tag">GIT</span>
+                            <span class="tag">DOCKER</span>
+                            <span class="tag">LINUX</span>
+                            <span class="tag">POSTMAN</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /.carousel -->
+        </div><!-- /.carousel-scene -->
+
+        <!-- Nav Controls -->
+        <div class="carousel-nav">
+            <button class="nav-btn" id="prevBtn">&#8592;</button>
+            <div class="carousel-dots">
+                <div class="dot active" data-dot="0"></div>
+                <div class="dot" data-dot="1"></div>
+                <div class="dot" data-dot="2"></div>
+                <div class="dot" data-dot="3"></div>
+            </div>
+            <button class="nav-btn" id="nextBtn">&#8594;</button>
+        </div>
+
+        <!-- Counter -->
+        <div class="skill-counter">
+            SKILL <span id="currentIdx">01</span> / <span>04</span>
+        </div>
+        <!-- ═══ Skill Detail Overlay ═══ -->
+        <div class="skill-overlay" id="skillOverlay">
+            <div class="skill-overlay-inner">
+                <div class="sov-card-slot" id="sovCardSlot"></div>
+                <svg class="sov-svg" id="sovSvg"></svg>
+                <div class="sov-nodes" id="sovNodes"></div>
+                <button class="sov-close" id="sovClose">&#x2715; CLOSE</button>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+
+    </section>
+
 </main>
 
 </html>
